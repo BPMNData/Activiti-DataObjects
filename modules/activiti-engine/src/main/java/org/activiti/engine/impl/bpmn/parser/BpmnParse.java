@@ -78,7 +78,6 @@ import org.activiti.engine.impl.bpmn.listener.DelegateExpressionExecutionListene
 import org.activiti.engine.impl.bpmn.listener.DelegateExpressionTaskListener;
 import org.activiti.engine.impl.bpmn.listener.ExpressionExecutionListener;
 import org.activiti.engine.impl.bpmn.listener.ExpressionTaskListener;
-import org.activiti.engine.impl.bpmn.parser.BpmnParseListener;
 import org.activiti.engine.impl.bpmn.webservice.BpmnInterface;
 import org.activiti.engine.impl.bpmn.webservice.BpmnInterfaceImplementation;
 import org.activiti.engine.impl.bpmn.webservice.MessageDefinition;
@@ -118,6 +117,9 @@ import org.activiti.engine.impl.util.xml.Element;
 import org.activiti.engine.impl.util.xml.Parse;
 import org.activiti.engine.impl.variable.VariableDeclaration;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.drools.core.util.StringUtils;
+
+import de.hpi.uni.potsdam.bpmnToSql.DataObject;
 
 /**
  * Specific parsing of one BPMN 2.0 XML file, created by the {@link BpmnParser}.
@@ -191,6 +193,25 @@ public class BpmnParse extends Parse {
   protected Map<String, BpmnInterface> bpmnInterfaces = new HashMap<String, BpmnInterface>();
   protected Map<String, Operation> operations = new HashMap<String, Operation>();
   protected Map<String, SignalDefinition> signals = new HashMap<String, SignalDefinition>();
+  
+  // TODO: BPMN_SQL start
+  protected static Map<String, ArrayList<DataObject>> inputData = new HashMap<String, ArrayList<DataObject>>();
+  protected static Map<String, ArrayList<DataObject>> outputData = new HashMap<String, ArrayList<DataObject>>();
+  private Map<String, DataObject> dataObjectMap = new HashMap<String, DataObject>();
+  protected static Map<String, String> scopeInformation = new HashMap<String, String>();
+  
+  public static Map<String, String> getScopeInformation() {
+	return scopeInformation;
+}
+
+public static Map<String, ArrayList<DataObject>> getInputData() {
+	return inputData;
+  }
+
+  public static Map<String, ArrayList<DataObject>> getOutputData() {
+	return outputData;
+  }
+  // TODO: BPMN_SQL end
 
   // Members
   protected ExpressionManager expressionManager;
@@ -229,11 +250,6 @@ public class BpmnParse extends Parse {
 
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Unknown exception", e);
-      
-      // ALL unexpected exceptions should bubble up since they are not handled
-      // accordingly by onderlying parse-methods and can't be deployed
-      throw new ActivitiException("Error while parsing process: " + e.getMessage(), e);
-      
     } finally {
       if (hasWarnings()) {
         logWarnings();
@@ -596,8 +612,7 @@ public class BpmnParse extends Parse {
     processDefinition.setKey(processElement.attribute("id"));
     processDefinition.setName(processElement.attribute("name"));
     processDefinition.setCategory(rootElement.attribute("targetNamespace"));
-    processDefinition.setDescription(parseDocumentation(processElement)); 
-    processDefinition.setProperty(PROPERTYNAME_DOCUMENTATION, parseDocumentation(processElement)); // Kept for backwards compatibility. See ACT-1020
+    processDefinition.setProperty(PROPERTYNAME_DOCUMENTATION, parseDocumentation(processElement));
     processDefinition.setTaskDefinitions(new HashMap<String, TaskDefinition>());
     processDefinition.setDeploymentId(deployment.getId());
 
@@ -676,7 +691,11 @@ public class BpmnParse extends Parse {
     
     HashMap<String, Element> postponedElements  = new HashMap<String, Element>();
     
+    // TODO: BPMN_SQL start
+    parseScopeInformation(scopeElement, parentScope);
+    // TODO: BPMN_SQL end
     parseStartEvents(scopeElement, parentScope);
+    parseDataObjects(scopeElement, parentScope);
     parseActivities(scopeElement, parentScope, postponedElements);
     parsePostponedElements(scopeElement, parentScope, postponedElements);
     parseEndEvents(scopeElement, parentScope);
@@ -694,6 +713,56 @@ public class BpmnParse extends Parse {
     IOSpecification ioSpecification = parseIOSpecification(scopeElement.element("ioSpecification"));
     parentScope.setIoSpecification(ioSpecification);
     
+  }
+
+  // TODO: BPMN_SQL added
+  private void parseScopeInformation(Element parentElement, ScopeImpl scopeElement) {
+	  for (Element activityElement : parentElement.elements()) {
+		  if (activityElement.getTagName().equals("extensionElements")) {
+			  if (activityElement.element("scopeInformation") != null) {
+			    	scopeInformation.put(parentElement.attribute("id"), activityElement.element("scopeInformation").attribute("caseObject"));
+			    }
+		  }
+		    
+	  }
+  }
+
+  // TODO: BPMN_SQL added
+  private void parseDataObjects(Element parentElement, ScopeImpl scopeElement) {
+	  for (Element activityElement : parentElement.elements()) {
+		    if (activityElement.getTagName().equals("dataObject")) {
+		    	DataObject dataObj = new DataObject();
+		    	dataObj.setName(activityElement.attribute("name"));
+		    	
+		    	if(activityElement.attribute("isCollection").equalsIgnoreCase(("true"))) {
+		    		dataObj.setIsCollection(true);
+		    	}
+		    	
+		    	Element extension = activityElement.element("extensionElements");
+		    	dataObj.setPkey(extension.element("pk").getText());
+		    	dataObj.setPkType(extension.element("pk").attribute("type"));
+		    	
+		    	ArrayList<String> fkList = new ArrayList<String>(); 
+		    	for (Element fk : extension.elements()) {
+					if(fk.getTagName().equals("fk")) {
+						if(fk.getText().startsWith("*") && fk.getText().endsWith("*")) { //fk starting and ending with * are not in the scope of action
+						 //such fks are not needed for the SQL-queries
+						} else if(fk.getText().equalsIgnoreCase("null")) { //means that the specific fk is not yet set, e.g. because it was provided by another organisation
+							fkList.add(null);
+						} else {
+							fkList.add(fk.getText());
+						}
+						
+					}
+				}
+		    	if(!fkList.isEmpty()) {
+		    		dataObj.setFkeys(fkList);
+		    	}
+		    	
+		    	dataObj.setState(activityElement.element("dataState").attribute("name"));
+		    	dataObjectMap.put(activityElement.attribute("id"), dataObj);
+		    }
+	  }
   }
 
   protected void parsePostponedElements(Element scopeElement, ScopeImpl parentScope, HashMap<String, Element> postponedElements) {
@@ -852,7 +921,7 @@ public class BpmnParse extends Parse {
       targetRef = targetElement.getText();
     }
     
-    if (targetRef != null && targetRef.equals("")) {
+    if (StringUtils.isEmpty(targetRef)) {
       addError("targetRef is required", dataAssociationElement);
     }
     
@@ -1111,8 +1180,71 @@ public class BpmnParse extends Parse {
   public void parseActivities(Element parentElement, ScopeImpl scopeElement, HashMap<String, Element> postponedElements) {
     for (Element activityElement : parentElement.elements()) {
       parseActivity(activityElement, parentElement, scopeElement, postponedElements);
+      // TODO: BPMN_SQL start
+      parseDataInput(activityElement);
+      parseDataOutput(activityElement);
+      // TODO: BPMN_SQL end
     }
   }
+  
+  // TODO: BPMN_SQL added
+  protected void parseDataInput(Element activityElement){ 
+	  //List for saving the input data objects for this activity
+	  ArrayList<DataObject> doList = new ArrayList<DataObject>();
+	  
+	  // check whether dataOutputAssociations exist for this activity
+	  for (Element ae : activityElement.elements()) {
+		if (ae.getTagName().equals("dataInputAssociation")) {
+			System.out.println(ae.element("sourceRef").getText());
+			DataObject d =  dataObjectMap.get(ae.element("sourceRef").getText()); //get the respective data object of this dataInputAssociation
+			
+			 //check whether any arc expressions exist
+			for (Element doAssElement : ae.elements()) {			
+				  if (doAssElement.getTagName().equals("extensionElements")) { 
+					  if (doAssElement.element("regExpression") != null) {
+					    d.setRegExpression(doAssElement.element("regExpression").getText());	//update data object with content of arc expression
+
+					    }
+				  }
+				    
+			  }
+			  doList.add(d);
+			
+		  }
+	  }
+	  if(!doList.isEmpty()) {
+		  inputData.put(activityElement.attribute("id"),doList);
+	  }
+  }
+  
+  // TODO: BPMN_SQL added
+  protected void parseDataOutput(Element activityElement){
+	  //List for saving the output data objects for this activity
+	  ArrayList<DataObject> doList = new ArrayList<DataObject>();   
+	  
+	  // check whether dataOutputAssociations exist for this activity
+	  for (Element ae : activityElement.elements()) {
+		if (ae.getTagName().equals("dataOutputAssociation")) {		
+			DataObject d =  dataObjectMap.get(ae.element("targetRef").getText()); //get the respective data object of this dataOutAssociation
+			
+			// check whether any arc expressions exist
+			for (Element doAssElement : ae.elements()) {			
+				  if (doAssElement.getTagName().equals("extensionElements")) { 
+					  if (doAssElement.element("processVariable") != null) {
+					    d.setProcessVariable(doAssElement.element("processVariable").getText());	//update data object with content of arc expression
+
+					    }
+				  }
+				    
+			  }
+			  doList.add(d);
+		  }
+	  }
+	  if(!doList.isEmpty()) {
+		  outputData.put(activityElement.attribute("id"),doList); //Activity with its List of output data objects will be added to the outputDataMap
+	  }
+  }
+  
 
   protected void parseActivity(Element activityElement, Element parentElement, ScopeImpl scopeElement, HashMap<String, Element> postponedElements) {
     ActivityImpl activity = null;
@@ -1739,14 +1871,14 @@ public class BpmnParse extends Parse {
       }
   
       if (ruleVariableInputString != null) {
-        List<String> ruleVariableInputObjects = parseCommaSeparatedList(ruleVariableInputString);
+        String[] ruleVariableInputObjects = ruleVariableInputString.split(",");
         for (String ruleVariableInputObject : ruleVariableInputObjects) {
           ruleActivity.addRuleVariableInputIdExpression(expressionManager.createExpression(ruleVariableInputObject.trim()));
         }
       }
   
       if (rulesString != null) {
-        List<String> rules = parseCommaSeparatedList(rulesString);
+        String[] rules = rulesString.split(",");
         for (String rule : rules) {
           ruleActivity.addRuleIdExpression(expressionManager.createExpression(rule.trim()));
         }
@@ -2429,7 +2561,7 @@ public class BpmnParse extends Parse {
       boolean interrupting = cancelActivity.equals("true") ? true : false;
 
       // Catch event behavior is the same for most types
-      ActivityBehavior behavior = null;
+      ActivityBehavior behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
 
       // Depending on the sub-element definition, the correct activityBehavior
       // parsing is selected
@@ -2440,23 +2572,18 @@ public class BpmnParse extends Parse {
       Element compensateEventDefinition = boundaryEventElement.element("compensateEventDefinition");
       Element messageEventDefinition = boundaryEventElement.element("messageEventDefinition");
       if (timerEventDefinition != null) {
-    	behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseBoundaryTimerEventDefinition(timerEventDefinition, interrupting, nestedActivity);
       } else if (errorEventDefinition != null) {
         interrupting = true; // non-interrupting not yet supported
-        behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseBoundaryErrorEventDefinition(errorEventDefinition, interrupting, parentActivity, nestedActivity);
       } else if (signalEventDefinition != null) {
-    	behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseBoundarySignalEventDefinition(signalEventDefinition, interrupting, nestedActivity);
       } else if (cancelEventDefinition != null) {
         // always interrupting
         behavior = parseBoundaryCancelEventDefinition(cancelEventDefinition, nestedActivity);
       } else if(compensateEventDefinition != null) {
-        behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseCatchCompensateEventDefinition(compensateEventDefinition, nestedActivity);      
       } else if(messageEventDefinition != null) {
-        behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseBoundaryMessageEventDefinition(messageEventDefinition, interrupting, nestedActivity);
       } else {
         addError("Unsupported boundary event type", boundaryEventElement);
@@ -2487,12 +2614,6 @@ public class BpmnParse extends Parse {
   public void parseBoundaryTimerEventDefinition(Element timerEventDefinition, boolean interrupting, ActivityImpl timerActivity) {
     timerActivity.setProperty("type", "boundaryTimer");
     TimerDeclarationImpl timerDeclaration = parseTimer(timerEventDefinition, timerActivity, TimerExecuteNestedActivityJobHandler.TYPE);
-    
-    // ACT-1427
-    if (interrupting) {
-      timerDeclaration.setInterruptingTimer(true);
-    }
-    
     addTimerDeclaration(timerActivity.getParent(), timerDeclaration);
 
     if (timerActivity.getParent() instanceof ActivityImpl) {
@@ -2730,7 +2851,11 @@ public class BpmnParse extends Parse {
    *          The current scope on which the subprocess is defined.
    */
   public ActivityImpl parseSubProcess(Element subProcessElement, ScopeImpl scope) {
-    ActivityImpl activity = createActivityOnScope(subProcessElement, scope);
+	// TODO: BPMN_SQL start
+	parseScopeInformation(subProcessElement, scope);
+	// TODO: BPMN_SQL end
+	  
+	ActivityImpl activity = createActivityOnScope(subProcessElement, scope);
     
     activity.setAsync(isAsync(subProcessElement));
     activity.setExclusive(isExclusive(subProcessElement));
@@ -2984,10 +3109,9 @@ public class BpmnParse extends Parse {
         addError("Invalid source '" + sourceRef + "' of sequence flow '" + id + "'", sequenceFlowElement);
       } else if (destinationActivity == null) {
         addError("Invalid destination '" + destinationRef + "' of sequence flow '" + id + "'", sequenceFlowElement);
-      /*} else if(sourceActivity.getActivityBehavior() instanceof EventBasedGatewayActivityBehavior) {     
-        // ignore*/
-      } else if(!(sourceActivity.getActivityBehavior() instanceof EventBasedGatewayActivityBehavior)
-              && destinationActivity.getActivityBehavior() instanceof IntermediateCatchEventActivitiBehaviour
+      } else if(sourceActivity.getActivityBehavior() instanceof EventBasedGatewayActivityBehavior) {     
+        // ignore
+      } else if(destinationActivity.getActivityBehavior() instanceof IntermediateCatchEventActivitiBehaviour
               && (destinationActivity.getParentActivity() != null)
               && (destinationActivity.getParentActivity().getActivityBehavior() instanceof EventBasedGatewayActivityBehavior)) {
         addError("Invalid incoming sequenceflow for intermediateCatchEvent with id '"+destinationActivity.getId()+"' connected to an event-based gateway.", sequenceFlowElement);        
@@ -3225,9 +3349,8 @@ public class BpmnParse extends Parse {
   public void parseBPMNEdge(Element bpmnEdgeElement) {
     String sequenceFlowId = bpmnEdgeElement.attribute("bpmnElement");
     if (sequenceFlowId != null && !"".equals(sequenceFlowId)) {
-      if (sequenceFlows != null && sequenceFlows.containsKey(sequenceFlowId)) {
-        
-        TransitionImpl sequenceFlow = sequenceFlows.get(sequenceFlowId);
+      TransitionImpl sequenceFlow = sequenceFlows.get(sequenceFlowId);
+      if (sequenceFlow != null) {
         List<Element> waypointElements = bpmnEdgeElement.elementsNS(BpmnParser.OMG_DI_NS, "waypoint");
         if (waypointElements.size() >= 2) {
           List<Integer> waypoints = new ArrayList<Integer>();

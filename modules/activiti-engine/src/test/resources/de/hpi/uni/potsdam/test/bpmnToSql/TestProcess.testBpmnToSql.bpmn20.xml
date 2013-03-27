@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:signavio="http://www.signavio.com"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns:activiti="http://activiti.org/bpmn"
+			 xmlns:bpt="http://bpt.uni-potsdam.de"
+			 exporter="Signavio Process Editor, http://www.signavio.com"
+			 exporterVersion="6.7.0"
+			 expressionLanguage="http://www.w3.org/1999/XPath"
+			 id="sid-e2022f89-b461-4154-95e1-413f19f947ab"
+			 targetNamespace="http://www.signavio.com/bpmn20"
+			 typeLanguage="http://www.w3.org/2001/XMLSchema"
+			 xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+
+	<process id="testProcess">
+		<extensionElements>
+			<bpt:scopeInformation id="mainProcess" caseObject="Order" />
+		</extensionElements>
+		<startEvent id="SE__sid-C36DC1D9-5224-4DB0-84BA-BF4BBBC75835">
+			<!--<outgoing>sid-CD96643C-1DEE-4761-A5B4-76F0E163D217</outgoing>-->
+		</startEvent>
+		<scriptTask id="A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB" name="A" scriptFormat="javascript">
+			<!--<incoming>sid-CD96643C-1DEE-4761-A5B4-76F0E163D217</incoming>
+			<outgoing>sid-0E5195F8-D13B-419A-95B0-AFF47B415917</outgoing>-->
+			<dataInputAssociation id="sid-3BFD7B92-4303-4073-B9BC-2DED408997AA">
+				<sourceRef>sid-357A2035-A7E8-425D-9010-42C3425BF6E8</sourceRef>
+				<targetRef>A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="sid-FAF6124C-ABF4-4537-AF52-660EBFC68EC3">
+				<sourceRef>sid-23898D1E-9147-4CF0-AEEC-77FB31303C67</sourceRef>
+				<targetRef>A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="sid-84EAB9E7-2295-4B80-B311-B038355E1215">
+				<sourceRef>A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB</sourceRef>
+				<targetRef>sid-E747DAD8-E55D-47E7-9382-057D566C6EF4</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation id="sid-2E48A0FC-09FD-4F1E-8596-FB3BA3AAF261">
+				<sourceRef>A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB</sourceRef>
+				<targetRef>sid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation id="pid-2E48A0FC-09FD-4F1E-8596-FB3BA3AAF261">
+				<sourceRef>A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB</sourceRef>
+				<targetRef>tid-38430585-4A24-44CA-8F47-2C2FF1F02A81</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation id="apid-2E48A0FC-09FD-4F1E-8596-FB3BA3AAF261">
+				<extensionElements>
+					<bpt:processVariable id="count_apid-2E48A0FC-09FD-4F1E-8596-FB3BA3AAF261">numberOfItems1</bpt:processVariable>
+				</extensionElements>
+				<sourceRef>A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB</sourceRef>
+				<targetRef>atid-38430585-4A24-44CA-8F47-2C2FF1F02A81</targetRef>
+			</dataOutputAssociation>
+			<script>numberOfItems1 = "3";</script>
+		</scriptTask>
+		<task completionQuantity="1" id="B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D" isForCompensation="false" name="B" startQuantity="1">
+			<!--<incoming>sid-6D85AC19-250B-4AA7-AA87-2A2BF9211589</incoming>
+			<outgoing>sid-B4A309A3-7F2A-4999-BD96-9C84D758353C</outgoing>-->
+			<dataInputAssociation id="sid-5CB2BF60-4C29-46E7-A670-C424E7D3C3AB">
+				<sourceRef>pid-E747DAD8-E55D-47E7-9382-057D566C6EF4</sourceRef>
+				<targetRef>B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="bsid-5CB2BF60-4C29-46E7-A670-C424E7D3C3AB">
+				<sourceRef>sid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768</sourceRef>
+				<targetRef>B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="bbsid-5CB2BF60-4C29-46E7-A670-C424E7D3C3AB">
+				<sourceRef>bsid-23898D1E-9147-4CF0-AEEC-77FB31303C67</sourceRef>
+				<targetRef>B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="bsid-A17A5BBF-8D68-43B0-BC8C-C7A515F6218E">
+				<sourceRef>B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D</sourceRef>
+				<targetRef>sid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation id="sid-A17A5BBF-8D68-43B0-BC8C-C7A515F6218E">
+				<sourceRef>B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D</sourceRef>
+				<targetRef>bsid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768</targetRef>
+			</dataOutputAssociation>
+		</task>
+		<task completionQuantity="1" id="C__sid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74" isForCompensation="false" name="C" startQuantity="1">
+			<!--<incoming>sid-B4A309A3-7F2A-4999-BD96-9C84D758353C</incoming>
+			<outgoing>sid-39D686B2-E126-4458-BA91-BC8FEB45416A</outgoing>-->
+			<dataInputAssociation id="sid-5F9495CC-D67C-4D40-B182-1555FEF1C2B5">
+				<sourceRef>sid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF</sourceRef>
+				<targetRef>C__sid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="sid-3F3E6A0C-D6BF-4919-895D-8AB884F4BEE0">
+				<sourceRef>C__sid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74</sourceRef>
+				<targetRef>sid-EE8044B1-FFB2-4911-919D-B5E19499C59A</targetRef>
+			</dataOutputAssociation>
+		</task>
+		<subProcess id="SP__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D">
+			<extensionElements>
+				<bpt:scopeInformation id="subProcess" caseObject="Product" />
+			</extensionElements>
+			<!--<incoming>sid-39D686B2-E126-4458-BA91-BC8FEB45416A</incoming>
+			<outgoing>...</outgoing>-->
+			<dataInputAssociation id="sid-027E9BF6-9238-464D-B566-B8CCD38CCAE7">
+	            <sourceRef>sid-EE8044B1-FFB2-4911-919D-B5E19499C59A</sourceRef>
+	            <targetRef>SP__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D</targetRef>
+         	</dataInputAssociation>
+			<startEvent id="SE__SP__sid-AA6EF316-F075-4496-9700-BF5E4EAF4475">
+				<!--<outgoing>gid-6D85AC19-250B-4AA7-AA87-2A2BF9211589</outgoing>-->
+			</startEvent>
+			<task completionQuantity="1" id="D__gid-689E0F52-A9A5-4826-BCC8-640BB31B579D" isForCompensation="false" name="D" startQuantity="1">
+				<!--<incoming>gid-6D85AC19-250B-4AA7-AA87-2A2BF9211589</incoming>
+				<outgoing>gid-B4A309A3-7F2A-4999-BD96-9C84D758353C</outgoing>-->
+				<dataInputAssociation id="gid-5CB2BF60-4C29-46E7-A670-C424E7D3C3AB">
+					<sourceRef>gid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF</sourceRef>
+					<targetRef>D__gid-689E0F52-A9A5-4826-BCC8-640BB31B579D</targetRef>
+				</dataInputAssociation>
+				<dataOutputAssociation id="gid-A17A5BBF-8D68-43B0-BC8C-C7A515F6218E">
+					<sourceRef>D__gid-689E0F52-A9A5-4826-BCC8-640BB31B579D</sourceRef>
+					<targetRef>gid-EE8044B1-FFB2-4911-919D-B5E19499C59A</targetRef>
+				</dataOutputAssociation>
+			</task>
+			<task completionQuantity="1" id="G__gid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74" isForCompensation="false" name="G" startQuantity="1">
+				<!--<incoming>gid-B4A309A3-7F2A-4999-BD96-9C84D758353C</incoming>
+				<outgoing>gid-39D686B2-E126-4458-BA91-BC8FEB45416A</outgoing>-->
+				<dataInputAssociation id="gid-5F9495CC-D67C-4D40-B182-1555FEF1C2B5">
+					<sourceRef>gid-EE8044B1-FFB2-4911-919D-B5E19499C59A</sourceRef>
+					<targetRef>G__gid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74</targetRef>
+				</dataInputAssociation>
+				<dataOutputAssociation id="gid-3F3E6A0C-D6BF-4919-895D-8AB884F4BEE0">
+					<sourceRef>G__gid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74</sourceRef>
+					<targetRef>gid-5660F06C-12CE-4E07-B970-C3D891E85D30</targetRef>
+				</dataOutputAssociation>
+			</task>
+			<endEvent id="EE_SP__sid-5A47DC0F-6F36-486F-B0BA-243E607FAD46">
+				<!--<incoming>gid-39D686B2-E126-4458-BA91-BC8FEB45416A</incoming>-->
+			</endEvent>
+			<sequenceFlow id="gid-6D85AC19-250B-4AA7-AA87-2A2BF9211589" sourceRef="SE__SP__sid-AA6EF316-F075-4496-9700-BF5E4EAF4475" targetRef="D__gid-689E0F52-A9A5-4826-BCC8-640BB31B579D"/>
+			<sequenceFlow id="gid-B4A309A3-7F2A-4999-BD96-9C84D758353C" sourceRef="D__gid-689E0F52-A9A5-4826-BCC8-640BB31B579D" targetRef="G__gid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74"/>
+			<sequenceFlow id="gid-39D686B2-E126-4458-BA91-BC8FEB45416A" sourceRef="G__gid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74" targetRef="EE_SP__sid-5A47DC0F-6F36-486F-B0BA-243E607FAD46"/>
+		</subProcess>
+		<scriptTask id="H__vsid-4C30A198-36BC-4D97-975F-08043A4CCB6E" name="H" scriptFormat="javascript">
+			<dataInputAssociation id="sid-9035F88F-12DF-4F18-8721-6BFEDE6DD834">
+				<sourceRef>sid-F65686CF-2A56-464A-B2FE-B14BED20295F</sourceRef>
+				<targetRef>H__vsid-4C30A198-36BC-4D97-975F-08043A4CCB6E</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="asid-FE1B4DD4-6AB8-4530-B21E-E9D37BE730C3">
+				<extensionElements>
+					<bpt:processVariable id="count_apid-2E48A0FC-09FD-4F1E-8596-FB3BA3AAF261">numberOfItems2</bpt:processVariable>
+				</extensionElements>
+				<sourceRef>H__vsid-4C30A198-36BC-4D97-975F-08043A4CCB6E</sourceRef>
+				<targetRef>shpid-E747DAD8-E55D-47E7-9382-057D566C6EF4</targetRef>
+			</dataOutputAssociation>
+			<script>numberOfItems2 = "5";</script>
+		</scriptTask>
+		<subProcess id="SP-2__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D">
+			<extensionElements>
+				<bpt:scopeInformation id="subProcess2" caseObject="Shipment" />
+			</extensionElements>
+			<dataInputAssociation id="shsid-027E9BF6-9238-464D-B566-B8CCD38CCAE7">
+	            <sourceRef>gcshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4</sourceRef>
+	            <targetRef>SP-2__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D</targetRef>
+         	</dataInputAssociation>
+			<!--<dataOutputAssociation id="shasid-FE1B4DD4-6AB8-4530-B21E-E9D37BE730C3">
+				<sourceRef>SP:2__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D</sourceRef>
+				<targetRef>ahshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4</targetRef>
+			</dataOutputAssociation>-->
+			<multiInstanceLoopCharacteristics isSequential="false" activiti:collection="Shipment" activiti:elementVariable="sid"></multiInstanceLoopCharacteristics>
+			<startEvent id="SE__SP-2__sid-AA6EF316-F075-4496-9700-BF5E4EAF4475">
+			</startEvent>
+			<task completionQuantity="1" id="I__shgid-689E0F52-A9A5-4826-BCC8-640BB31B579D" isForCompensation="false" name="D" startQuantity="1">
+				<dataInputAssociation id="shgid-5CB2BF60-4C29-46E7-A670-C424E7D3C3AB">
+					<sourceRef>shgid-EE8044B1-FFB2-4911-919D-B5E19499C59A</sourceRef>
+					<targetRef>I__shgid-689E0F52-A9A5-4826-BCC8-640BB31B579D</targetRef>
+				</dataInputAssociation>
+				<dataOutputAssociation id="shgid-A17A5BBF-8D68-43B0-BC8C-C7A515F6218E">
+					<sourceRef>I__shgid-689E0F52-A9A5-4826-BCC8-640BB31B579D</sourceRef>
+					<targetRef>shgid-5660F06C-12CE-4E07-B970-C3D891E85D30</targetRef>
+				</dataOutputAssociation>
+			</task>
+			<endEvent id="EE_SP-2__sid-5A47DC0F-6F36-486F-B0BA-243E607FAD46">
+			</endEvent>
+			<sequenceFlow id="shgid-6D85AC19-250B-4AA7-AA87-2A2BF9211589" sourceRef="SE__SP-2__sid-AA6EF316-F075-4496-9700-BF5E4EAF4475" targetRef="I__shgid-689E0F52-A9A5-4826-BCC8-640BB31B579D"/>
+			<sequenceFlow id="shgid-B4A309A3-7F2A-4999-BD96-9C84D758353C" sourceRef="I__shgid-689E0F52-A9A5-4826-BCC8-640BB31B579D" targetRef="EE_SP-2__sid-5A47DC0F-6F36-486F-B0BA-243E607FAD46"/>
+		</subProcess>
+		<task completionQuantity="1" id="E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E" isForCompensation="false" name="E" startQuantity="1">
+			<!--<incoming>gid-962CD9A9-460F-442A-884F-BF975C009729</incoming>
+			<outgoing>sid-D97C22CE-1A70-49BF-A7D0-0EE955517740</outgoing>-->
+			<dataInputAssociation id="shsid-9035F88F-12DF-4F18-8721-6BFEDE6DD834">
+				<sourceRef>sid-F65686CF-2A56-464A-B2FE-B14BED20295F</sourceRef>
+				<targetRef>E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="pid-9035F88F-12DF-4F18-8721-6BFEDE6DD834">
+				<sourceRef>qid-38430585-4A24-44CA-8F47-2C2FF1F02A81</sourceRef>
+				<targetRef>E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="apid-9035F88F-12DF-4F18-8721-6BFEDE6DD834">
+				<sourceRef>aqid-38430585-4A24-44CA-8F47-2C2FF1F02A81</sourceRef>
+				<targetRef>E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="sid-FE1B4DD4-6AB8-4530-B21E-E9D37BE730C3">
+				<sourceRef>E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E</sourceRef>
+				<targetRef>sid-38430585-4A24-44CA-8F47-2C2FF1F02A81</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation id="shasid-FE1B4DD4-6AB8-4530-B21E-E9D37BE730C3">
+				<sourceRef>E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E</sourceRef>
+				<targetRef>asid-38430585-4A24-44CA-8F47-2C2FF1F02A81</targetRef>
+			</dataOutputAssociation>
+		</task>
+		<task completionQuantity="1" id="F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E" isForCompensation="false" name="F" startQuantity="1">
+			<!--<incoming>sid-D97C22CE-1A70-49BF-A7D0-0EE955517740</incoming>
+			<outgoing>sid-482C4635-5365-46F4-92C5-DBCDE4F62E51</outgoing>-->
+			<dataInputAssociation id="sid-992260C8-A568-4F01-9791-477EDE515693">
+				<sourceRef>pid-38430585-4A24-44CA-8F47-2C2FF1F02A81</sourceRef>
+				<targetRef>F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="sid-C2C84224-7FA4-4121-AE6D-9648C9895043">
+				<sourceRef>sid-F65686CF-2A56-464A-B2FE-B14BED20295F</sourceRef>
+				<targetRef>F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="asid-C2C84224-7FA4-4121-AE6D-9648C9895043">
+				<sourceRef>asid-38430585-4A24-44CA-8F47-2C2FF1F02A81</sourceRef>
+				<targetRef>F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="sid-A9752605-211E-44D5-A3F0-8E83EE44E929">
+				<sourceRef>F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E</sourceRef>
+				<targetRef>sid-D5E57F14-6F75-49FB-8830-B1272CF16173</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation id="sid-7CCA9404-EE8A-460C-9D6C-360F5B6CAFA7">
+				<sourceRef>F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E</sourceRef>
+				<targetRef>sid-C255C0A7-FFBF-4451-8BA0-2CD447EA36FB</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation id="asid-7CCA9404-EE8A-460C-9D6C-360F5B6CAFA7">
+				<sourceRef>F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E</sourceRef>
+				<targetRef>asid-D5E57F14-6F75-49FB-8830-B1272CF16173</targetRef>
+			</dataOutputAssociation>
+		</task>
+		<endEvent id="EE__sid-E0E1B51E-2910-4F98-8071-DC631177546A">
+			<!--<incoming>sid-482C4635-5365-46F4-92C5-DBCDE4F62E51</incoming>-->
+		</endEvent>
+		<sequenceFlow id="sid-CD96643C-1DEE-4761-A5B4-76F0E163D217" sourceRef="SE__sid-C36DC1D9-5224-4DB0-84BA-BF4BBBC75835" targetRef="A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB"/>
+		<sequenceFlow id="sid-0E5195F8-D13B-419A-95B0-AFF47B415917" sourceRef="A__sid-A711B8E7-258E-4F18-B9CF-B19E3D0763AB" targetRef="B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D"/>
+		<sequenceFlow id="sid-B4A309A3-7F2A-4999-BD96-9C84D758353C" sourceRef="B__sid-689E0F52-A9A5-4826-BCC8-640BB31B579D" targetRef="C__sid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74"/>
+		<sequenceFlow id="sid-962CD9A9-460F-442A-884F-BF975C009729" sourceRef="C__sid-3A2CEE9F-F57C-4305-B988-EFF65ED77A74" targetRef="SP__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D"/>
+		<sequenceFlow id="gid-962CD9A9-460F-442A-884F-BF975C009729" sourceRef="SP__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D" targetRef="H__vsid-4C30A198-36BC-4D97-975F-08043A4CCB6E"/>
+		<sequenceFlow id="shgid-962CD9A9-460F-442A-884F-BF975C009729" sourceRef="H__vsid-4C30A198-36BC-4D97-975F-08043A4CCB6E" targetRef="SP-2__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D"/>
+		<sequenceFlow id="vgshgid-962CD9A9-460F-442A-884F-BF975C009729" sourceRef="SP-2__sid-D9CCBBEC-5F65-4B6E-9C97-4E9E6C656D4D" targetRef="E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E"/>
+		<sequenceFlow id="sid-D97C22CE-1A70-49BF-A7D0-0EE955517740" sourceRef="E__sid-4C30A198-36BC-4D97-975F-08043A4CCB6E" targetRef="F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E"/>
+		<sequenceFlow id="sid-482C4635-5365-46F4-92C5-DBCDE4F62E51" sourceRef="F__sid-9B5407DB-50EE-4BC7-B6E3-B47E2B25BA9E" targetRef="EE__sid-E0E1B51E-2910-4F98-8071-DC631177546A"/>
+		<dataObject id="sid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_sid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF" type="">pid</bpt:pk>
+				<bpt:fk id="fk_sid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-eb5d8840-aad2-4588-ab1a-13346c5c9021" name="intact"/>
+		</dataObject>
+		<dataObject id="sid-EE8044B1-FFB2-4911-919D-B5E19499C59A" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_sid-EE8044B1-FFB2-4911-919D-B5E19499C59A" type="">pid</bpt:pk>
+				<bpt:fk id="fk_sid-EE8044B1-FFB2-4911-919D-B5E19499C59A" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-71fcdd2b-723c-468b-8082-20a149a1251e" name="sent"/>
+		</dataObject>
+		<dataObject id="sid-5660F06C-12CE-4E07-B970-C3D891E85D30" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_sid-5660F06C-12CE-4E07-B970-C3D891E85D30" type="">pid</bpt:pk>
+				<bpt:fk id="fk_sid-5660F06C-12CE-4E07-B970-C3D891E85D30" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-0389e307-0759-48a9-96d5-f1bbda0a8381" name="destroyed"/>
+		</dataObject>
+		<dataObject id="gid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_gid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF" type="">pid</bpt:pk>
+				<bpt:fk id="fk_gid-ED00E696-CBC7-4DEC-A760-9EEBD63B10CF" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="gid-eb5d8840-aad2-4588-ab1a-13346c5c9021" name="sent"/>
+		</dataObject>
+		<dataObject id="gid-EE8044B1-FFB2-4911-919D-B5E19499C59A" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_gid-EE8044B1-FFB2-4911-919D-B5E19499C59A" type="">pid</bpt:pk>
+				<bpt:fk id="fk_gid-EE8044B1-FFB2-4911-919D-B5E19499C59A" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="gid-71fcdd2b-723c-468b-8082-20a149a1251e" name="delivered"/>
+		</dataObject>
+		<dataObject id="gid-5660F06C-12CE-4E07-B970-C3D891E85D30" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_gid-5660F06C-12CE-4E07-B970-C3D891E85D30" type="delete">pid</bpt:pk>
+				<bpt:fk id="fk_gid-5660F06C-12CE-4E07-B970-C3D891E85D30" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="gid-0389e307-0759-48a9-96d5-f1bbda0a8381" name="delivered"/>
+		</dataObject>
+		<dataObject id="sid-357A2035-A7E8-425D-9010-42C3425BF6E8" isCollection="false" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-357A2035-A7E8-425D-9010-42C3425BF6E8" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-357A2035-A7E8-425D-9010-42C3425BF6E8" type=""></bpt:fk>
+			</extensionElements>
+			<dataState id="sid-497c8775-57fa-4c2b-917b-abb035c3cde6" name="received"/>
+		</dataObject>
+		<dataObject id="sid-23898D1E-9147-4CF0-AEEC-77FB31303C67" isCollection="false" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-23898D1E-9147-4CF0-AEEC-77FB31303C67" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-23898D1E-9147-4CF0-AEEC-77FB31303C67" type=""></bpt:fk>
+			</extensionElements>
+			<dataState id="sid-dd0910cb-3b91-40e1-b172-8d364e6a3d6e" name="created"/>
+		</dataObject>
+		<dataObject id="sid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768" isCollection="false" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768" type=""></bpt:fk>
+			</extensionElements>
+			<dataState id="sid-bded6b6f-7551-4b82-8dd9-e2f64f81f693" name="confirmed"/>
+		</dataObject>
+		<dataObject id="sid-E747DAD8-E55D-47E7-9382-057D566C6EF4" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_sid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="new">pid</bpt:pk>
+				<bpt:fk id="fk_sid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-d78e9ab4-c63e-4f94-b63c-6d30766ee9d4" name="inStock"/>
+		</dataObject>
+		<dataObject id="pid-E747DAD8-E55D-47E7-9382-057D566C6EF4" isCollection="false" name="Product">
+			<extensionElements>
+				<bpt:pk id="pk_pid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">pid</bpt:pk>
+				<bpt:fk id="fk_pid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="pid-d78e9ab4-c63e-4f94-b63c-6d30766ee9d4" name="inStock"/>
+		</dataObject>
+		<dataObject id="sid-F65686CF-2A56-464A-B2FE-B14BED20295F" isCollection="false" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-F65686CF-2A56-464A-B2FE-B14BED20295F" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-F65686CF-2A56-464A-B2FE-B14BED20295F" type=""></bpt:fk>
+			</extensionElements>
+			<dataState id="sid-1d343282-0386-4f60-ac41-8e5ba675167b" name="confirmed"/>
+		</dataObject>
+		<dataObject id="tid-38430585-4A24-44CA-8F47-2C2FF1F02A81" isCollection="false" name="Invoice">
+			<extensionElements>
+				<bpt:pk id="pk_tid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="new">iid</bpt:pk>
+				<bpt:fk id="fk_tid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="tid-30e03d5c-afe1-49c4-ab87-a2fb93dd6e9a" name="created"/>
+		</dataObject>
+		<dataObject id="qid-38430585-4A24-44CA-8F47-2C2FF1F02A81" isCollection="false" name="Invoice">
+			<extensionElements>
+				<bpt:pk id="pk_qid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">iid</bpt:pk>
+				<bpt:fk id="fk_qid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="qid-30e03d5c-afe1-49c4-ab87-a2fb93dd6e9a" name="created"/>
+		</dataObject>
+		<dataObject id="sid-38430585-4A24-44CA-8F47-2C2FF1F02A81" isCollection="false" name="Invoice">
+			<extensionElements>
+				<bpt:pk id="pk_sid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">iid</bpt:pk>
+				<bpt:fk id="fk_sid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-30e03d5c-afe1-49c4-ab87-a2fb93dd6e9a" name="sent"/>
+		</dataObject>
+		<dataObject id="pid-38430585-4A24-44CA-8F47-2C2FF1F02A81" isCollection="false" name="Invoice">
+			<extensionElements>
+				<bpt:pk id="pk_pid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">iid</bpt:pk>
+				<bpt:fk id="fk_pid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="pid-30e03d5c-afe1-49c4-ab87-a2fb93dd6e9a" name="sent"/>
+		</dataObject>
+		<dataObject id="sid-D5E57F14-6F75-49FB-8830-B1272CF16173" isCollection="false" name="Invoice">
+			<extensionElements>
+				<bpt:pk id="pk_sid-D5E57F14-6F75-49FB-8830-B1272CF16173" type="delete">iid</bpt:pk>
+				<bpt:fk id="fk_sid-D5E57F14-6F75-49FB-8830-B1272CF16173" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-f6f036a5-3b3d-4065-9396-bea2293128a7" name="sent"/>
+		</dataObject>
+		<dataObject id="sid-C255C0A7-FFBF-4451-8BA0-2CD447EA36FB" isCollection="false" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-C255C0A7-FFBF-4451-8BA0-2CD447EA36FB" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-C255C0A7-FFBF-4451-8BA0-2CD447EA36FB" type=""></bpt:fk>
+			</extensionElements>
+			<dataState id="sid-fb1dc059-8a99-496f-b4ed-d9b97c2d5b14" name="archived"/>
+		</dataObject>
+		<dataObject id="atid-38430585-4A24-44CA-8F47-2C2FF1F02A81" isCollection="true" name="Bill">
+			<extensionElements>
+				<bpt:pk id="pk_atid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="new">bid</bpt:pk>
+				<bpt:fk id="fk_atid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="atid-30e03d5c-afe1-49c4-ab87-a2fb93dd6e9a" name="created"/>
+		</dataObject>
+		<dataObject id="aqid-38430585-4A24-44CA-8F47-2C2FF1F02A81" isCollection="true" name="Bill">
+			<extensionElements>
+				<bpt:pk id="pk_aqid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">bid</bpt:pk>
+				<bpt:fk id="fk_aqid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="aqid-30e03d5c-afe1-49c4-ab87-a2fb93dd6e9a" name="created"/>
+		</dataObject>
+		<dataObject id="asid-38430585-4A24-44CA-8F47-2C2FF1F02A81" isCollection="true" name="Bill">
+			<extensionElements>
+				<bpt:pk id="pk_asid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">bid</bpt:pk>
+				<bpt:fk id="fk_asid-38430585-4A24-44CA-8F47-2C2FF1F02A81" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="asid-30e03d5c-afe1-49c4-ab87-a2fb93dd6e9a" name="sent"/>
+		</dataObject>
+		<dataObject id="asid-D5E57F14-6F75-49FB-8830-B1272CF16173" isCollection="true" name="Bill">
+			<extensionElements>
+				<bpt:pk id="apk_sid-D5E57F14-6F75-49FB-8830-B1272CF16173" type="delete">bid</bpt:pk>
+				<bpt:fk id="fk_asid-D5E57F14-6F75-49FB-8830-B1272CF16173" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="asid-f6f036a5-3b3d-4065-9396-bea2293128a7" name="sent"/>
+		</dataObject>
+		
+		<dataObject id="bsid-23898D1E-9147-4CF0-AEEC-77FB31303C67" isCollection="false" name="Receipt">
+			<extensionElements>
+				<bpt:pk id="pk_bsid-23898D1E-9147-4CF0-AEEC-77FB31303C67" type="">rid</bpt:pk>
+				<bpt:fk id="fk_bsid-23898D1E-9147-4CF0-AEEC-77FB31303C67" type="">null</bpt:fk>
+			</extensionElements>
+			<dataState id="bsid-dd0910cb-3b91-40e1-b172-8d364e6a3d6e" name="approved"/>
+		</dataObject>
+		<dataObject id="bsid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768" isCollection="false" name="Receipt">
+			<extensionElements>
+				<bpt:pk id="pk_bsid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768" type="">rid</bpt:pk>
+				<bpt:fk id="fk_bsid-CA9A7C7F-D17B-4EDB-AFAD-30FB7937B768" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="bsid-bded6b6f-7551-4b82-8dd9-e2f64f81f693" name="closed"/>
+		</dataObject>
+		<dataObject id="shpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" isCollection="true" name="Shipment">
+			<extensionElements>
+				<bpt:pk id="pk_shpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="new">sid</bpt:pk>
+				<bpt:fk id="fk_shpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="shpid-d78e9ab4-c63e-4f94-b63c-6d30766ee9d4" name="packed"/>
+		</dataObject>
+		<dataObject id="gcshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" isCollection="true" name="Shipment">
+			<extensionElements>
+				<bpt:pk id="pk_gcshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">sid</bpt:pk>
+				<bpt:fk id="fk_gcshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="gcshpid-d78e9ab4-c63e-4f94-b63c-6d30766ee9d4" name="packed"/>
+		</dataObject>
+		<dataObject id="shgid-EE8044B1-FFB2-4911-919D-B5E19499C59A" isCollection="false" name="Shipment">
+			<extensionElements>
+				<bpt:pk id="pk_shgid-EE8044B1-FFB2-4911-919D-B5E19499C59A" type="">sid</bpt:pk>
+				<bpt:fk id="fk_shgid-EE8044B1-FFB2-4911-919D-B5E19499C59A" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="shgid-71fcdd2b-723c-468b-8082-20a149a1251e" name="packed"/>
+		</dataObject>
+		<dataObject id="shgid-5660F06C-12CE-4E07-B970-C3D891E85D30" isCollection="false" name="Shipment">
+			<extensionElements>
+				<bpt:pk id="pk_shgid-5660F06C-12CE-4E07-B970-C3D891E85D30" type="">sid</bpt:pk>
+				<bpt:fk id="fk_shgid-5660F06C-12CE-4E07-B970-C3D891E85D30" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="shgid-0389e307-0759-48a9-96d5-f1bbda0a8381" name="shipped"/>
+		</dataObject>
+		<dataObject id="ahshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" isCollection="true" name="Shipment">
+			<extensionElements>
+				<bpt:pk id="pk_ahshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">sid</bpt:pk>
+				<bpt:fk id="fk_ahshpid-E747DAD8-E55D-47E7-9382-057D566C6EF4" type="">oid</bpt:fk>
+			</extensionElements>
+			<dataState id="ahshpid-d78e9ab4-c63e-4f94-b63c-6d30766ee9d4" name="shipped"/>
+		</dataObject>
+	</process>
+</definitions>
