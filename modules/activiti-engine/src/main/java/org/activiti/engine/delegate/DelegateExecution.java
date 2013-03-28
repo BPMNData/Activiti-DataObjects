@@ -72,4 +72,16 @@ public interface DelegateExecution extends VariableScope {
    * All Activiti services can be accessed through this interface.
    */
   EngineServices getEngineServices();
+  
+  /**
+   * TODO BPMN_SQL
+   * @return id of main data object associated to this scope
+   */
+  String getDataObjectID();
+
+  /**
+   * TODO BPMN_SQL
+   * set main data object associated to this scope
+   */
+  void setDataObjectID(String id);
 }

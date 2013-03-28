@@ -872,4 +872,21 @@ public class ExecutionImpl implements
   public void disposeStartingExecution() {
     startingExecution = null;
   }
+  
+  // TODO: BPMN_SQL added
+  private String dataObjectId = null;
+
+  // TODO: BPMN_SQL added
+  public String getDataObjectID() {
+	  if (dataObjectId != null) return dataObjectId;
+	  else {
+		  if (getParent() != null) return getParent().getDataObjectID();
+		  else return getId();
+	  }
+  }
+  
+  // TODO: BPMN_SQL added
+  public void setDataObjectID(String id) {
+	  dataObjectId = id;
+  }
 }

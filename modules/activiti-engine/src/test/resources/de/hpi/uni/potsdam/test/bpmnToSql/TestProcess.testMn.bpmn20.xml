@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+			 xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" 
+			 xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" 
+			 xmlns:signavio="http://www.signavio.com" 
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			 xmlns:activiti="http://activiti.org/bpmn"
+		 	 xmlns:bpt="http://bpt.uni-potsdam.de"
+			 exporter="Signavio Process Editor, http://www.signavio.com" 
+			 exporterVersion="6.7.0" 
+			 expressionLanguage="http://www.w3.org/1999/XPath" 
+			 id="sid-3bb949c2-d793-498f-a054-f017a96ed5ea" 
+			 targetNamespace="http://www.signavio.com/bpmn20" 
+			 typeLanguage="http://www.w3.org/2001/XMLSchema" 
+			 xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+	
+	<process id="mn">
+		<extensionElements>
+			<bpt:scopeInformation id="mainProcess" caseObject="BTO" />
+		</extensionElements>
+		<startEvent id="SE__sid-73399A71-2F70-44B6-B25C-CCB7AAFD375F"></startEvent>
+		<task completionQuantity="1" id="A__sid-66885BC6-9B96-45C4-B658-5A7E8EB3E0DA" isForCompensation="false" name="A" startQuantity="1">
+			<dataInputAssociation id="sid-8B263910-7737-4D1D-A11F-05A99E0CAFB2">
+				<sourceRef>sid-3528A49F-BA6B-4E3C-9EB9-41D358343E64</sourceRef>
+				<targetRef>A__sid-66885BC6-9B96-45C4-B658-5A7E8EB3E0DA</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation id="sid-B553767C-B41A-4E03-841D-4E89373CE28A">
+				<sourceRef>sid-431B8BC6-BE93-4238-8E4E-6DE3D7CB749A</sourceRef>
+				<targetRef>A__sid-66885BC6-9B96-45C4-B658-5A7E8EB3E0DA</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="sid-593D4011-3779-4E96-9689-1849833D4BAB">
+				<sourceRef>A__sid-66885BC6-9B96-45C4-B658-5A7E8EB3E0DA</sourceRef>
+				<targetRef>sid-14801724-483C-49C3-BF3F-71219A209BC3</targetRef>
+			</dataOutputAssociation>
+		</task>
+		<subProcess completionQuantity="1" id="SP1__sid-8B31A8CE-F0F8-4D27-839A-2D3188DF398E" isForCompensation="false" startQuantity="1" triggeredByEvent="false">
+			<extensionElements>
+				<bpt:scopeInformation id="subProcess1" caseObject="Order" />
+			</extensionElements>
+			<dataInputAssociation id="sid-0E14ABEB-DB5C-4484-9DA3-331F928C93E0">
+				<sourceRef>sid-14801724-483C-49C3-BF3F-71219A209BC3</sourceRef>
+				<targetRef>SP1__sid-8B31A8CE-F0F8-4D27-839A-2D3188DF398E</targetRef>
+			</dataInputAssociation>
+			<!--<dataOutputAssociation id="sid-8B4A5F9D-2216-429A-9CFB-E27EA5EE3659">
+				<sourceRef>SP1__sid-8B31A8CE-F0F8-4D27-839A-2D3188DF398E</sourceRef>
+				<targetRef>sid-1E0BA5BB-9AF3-4C83-8913-2C4D93697C87</targetRef>
+			</dataOutputAssociation>-->
+			<multiInstanceLoopCharacteristics id="sid-4f4d56d4-f0af-4e46-9fde-61965298e618" isSequential="false" activiti:collection="Order" activiti:elementVariable="oid"></multiInstanceLoopCharacteristics>
+			<startEvent id="SE__SP1__sid-982CAC90-693C-40F8-80B9-D57CA3EB6258"></startEvent>
+			<scriptTask id="B__sid-BE0561FF-F6E7-48CC-BAD2-83554CEF4CA3" name="B" scriptFormat="javascript">
+				<dataInputAssociation id="sid-2B0BE82D-BA41-4B7C-BAE6-29426378EFF2">
+					<sourceRef>sid-BCD308C3-52D0-4FFF-9100-AE63AC4B8F7F</sourceRef>
+					<targetRef>B__sid-BE0561FF-F6E7-48CC-BAD2-83554CEF4CA3</targetRef>
+				</dataInputAssociation>
+				<dataOutputAssociation id="sid-E5463BBF-83C1-46C6-A4F1-3FFB8CB80425">
+					<extensionElements>
+						<bpt:processVariable id="pv1">numberOfItems1</bpt:processVariable>
+					</extensionElements>
+					<sourceRef>B__sid-BE0561FF-F6E7-48CC-BAD2-83554CEF4CA3</sourceRef>
+					<targetRef>sid-8D52DC15-C2D5-4BF5-942F-F4C01FC8411D</targetRef>
+				</dataOutputAssociation>
+				<script>numberOfItems1 = "13"</script>
+			</scriptTask>
+			<endEvent id="EE__SP1__sid-A1EA418E-1D82-4B6F-898C-1A59EB46FF87"></endEvent>
+			<sequenceFlow id="sid-ABAA6F75-698F-41DB-841F-46389AAB2AE4" sourceRef="SE__SP1__sid-982CAC90-693C-40F8-80B9-D57CA3EB6258" targetRef="B__sid-BE0561FF-F6E7-48CC-BAD2-83554CEF4CA3"/>
+			<sequenceFlow id="sid-6F028BD3-BDA4-474C-8841-E00F28B2AACA" sourceRef="B__sid-BE0561FF-F6E7-48CC-BAD2-83554CEF4CA3" targetRef="EE__SP1__sid-A1EA418E-1D82-4B6F-898C-1A59EB46FF87"/>
+		</subProcess>
+		<scriptTask id="C__sid-A10E274D-5564-4CCF-9BB6-40E096CC9DBB" name="C" scriptFormat="javascript">
+			<dataInputAssociation id="sid-8DD431F1-70D6-4882-8F81-87E54F316F8C">
+				<sourceRef>sid-85094122-A0BD-4DBB-8EB8-075479FB616C</sourceRef>
+				<targetRef>C__sid-A10E274D-5564-4CCF-9BB6-40E096CC9DBB</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation id="sid-70CF46CB-3D5D-4224-85D1-B924B2429810">
+				<extensionElements>
+					<bpt:processVariable id="pv1">numberOfItems2</bpt:processVariable>
+				</extensionElements>
+				<sourceRef>C__sid-A10E274D-5564-4CCF-9BB6-40E096CC9DBB</sourceRef>
+				<targetRef>sid-77128F93-6465-4BAC-A3B3-533121E399EE</targetRef>
+			</dataOutputAssociation>
+			<script>numberOfItems2 = "5"</script>
+		</scriptTask>
+		<subProcess completionQuantity="1" id="SP2__sid-584DE683-3353-4834-9A19-05F4B314EB31" isForCompensation="false" startQuantity="1" triggeredByEvent="false">
+			<extensionElements>
+				<bpt:scopeInformation id="subProcess2" caseObject="Material Order" />
+			</extensionElements>
+			<dataInputAssociation id="sid-2D2E1F32-FE8F-467F-A730-A11154FA95DD">
+				<sourceRef>pid-77128F93-6465-4BAC-A3B3-533121E399EE</sourceRef>
+				<targetRef>SP2__sid-584DE683-3353-4834-9A19-05F4B314EB31</targetRef>
+			</dataInputAssociation>
+			<!--<dataOutputAssociation id="sid-C53E4016-F545-451F-A6A3-FF8C044E7D4A">
+				<sourceRef>SP2__sid-584DE683-3353-4834-9A19-05F4B314EB31</sourceRef>
+				<targetRef>sid-77B8C705-A7FA-474B-9EF6-88F5317E04CB</targetRef>
+			</dataOutputAssociation>-->
+			<multiInstanceLoopCharacteristics id="sid-a9b4da82-727f-4cf1-8867-19094821420f" isSequential="false" activiti:collection="Material Order" activiti:elementVariable="moid"></multiInstanceLoopCharacteristics>
+			<startEvent id="SE__SP2__sid-A606A453-A343-4905-9ACC-47A57AEB1B1C"></startEvent>
+			<task completionQuantity="1" id="D__sid-CEB030D0-3FC4-43F6-9B48-F597A3959E52" isForCompensation="false" name="D" startQuantity="1">
+				<dataInputAssociation id="sid-A65B9211-CD6F-43F9-B11E-C1E35F4F4663">
+					<sourceRef>sid-A1F8CE03-E8FA-4B09-A383-1DEF61A4F874</sourceRef>
+					<targetRef>D__sid-CEB030D0-3FC4-43F6-9B48-F597A3959E52</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation id="sid-37D2C90E-4507-45E9-A54C-87CFA06AA1FF">
+					<sourceRef>sid-095DBA1C-35D2-461C-B583-E9E534EE5CB6</sourceRef>
+					<targetRef>D__sid-CEB030D0-3FC4-43F6-9B48-F597A3959E52</targetRef>
+				</dataInputAssociation>
+				<dataOutputAssociation id="sid-E6D82376-69C8-489E-B4FC-2B2BB40DF32C">
+					<sourceRef>D__sid-CEB030D0-3FC4-43F6-9B48-F597A3959E52</sourceRef>
+					<targetRef>sid-F4C3206E-E1CC-46D5-97B4-C64A39682299</targetRef>
+				</dataOutputAssociation>
+			</task>
+			<endEvent id="EE__SP2__sid-244FACD4-1591-4F38-8C08-03AC21E057AC"></endEvent>
+			<sequenceFlow id="sid-062D0A7F-26DC-464C-ABC5-94968AFFF7AB" sourceRef="SE__SP2__sid-A606A453-A343-4905-9ACC-47A57AEB1B1C" targetRef="D__sid-CEB030D0-3FC4-43F6-9B48-F597A3959E52"/>
+			<sequenceFlow id="sid-FC4F66C6-8B29-458D-9A2E-20CCA199009A" sourceRef="D__sid-CEB030D0-3FC4-43F6-9B48-F597A3959E52" targetRef="EE__SP2__sid-244FACD4-1591-4F38-8C08-03AC21E057AC"/>
+		</subProcess>
+		<endEvent id="EE__sid-0C3D601F-68D7-452D-8894-16CC6E209E91"></endEvent>
+		<sequenceFlow id="sid-0CEEB6CE-7D91-40A5-8638-8DAA191EBCD7" sourceRef="SE__sid-73399A71-2F70-44B6-B25C-CCB7AAFD375F" targetRef="A__sid-66885BC6-9B96-45C4-B658-5A7E8EB3E0DA"/>
+		<sequenceFlow id="sid-92409B6D-CABF-49A9-BD7E-C2F5E6515690" sourceRef="A__sid-66885BC6-9B96-45C4-B658-5A7E8EB3E0DA" targetRef="SP1__sid-8B31A8CE-F0F8-4D27-839A-2D3188DF398E"/>
+		<sequenceFlow id="sid-CE38B1C8-5C72-4A06-8A0E-D282C9A60B2E" sourceRef="SP1__sid-8B31A8CE-F0F8-4D27-839A-2D3188DF398E" targetRef="C__sid-A10E274D-5564-4CCF-9BB6-40E096CC9DBB"/>
+		<sequenceFlow id="sid-CCE9B7D9-DCCD-4D6C-AC10-5B919183FAEE" sourceRef="C__sid-A10E274D-5564-4CCF-9BB6-40E096CC9DBB" targetRef="SP2__sid-584DE683-3353-4834-9A19-05F4B314EB31"/>
+		<sequenceFlow id="sid-1A882311-2B5B-4ACE-BF35-4ADCFABA48F7" sourceRef="SP2__sid-584DE683-3353-4834-9A19-05F4B314EB31" targetRef="EE__sid-0C3D601F-68D7-452D-8894-16CC6E209E91"/>
+		<dataObject id="sid-3528A49F-BA6B-4E3C-9EB9-41D358343E64" isCollection="false" name="BTO">
+			<extensionElements>
+				<bpt:pk id="pk_sid-3528A49F-BA6B-4E3C-9EB9-41D358343E64" type="">btoid</bpt:pk>
+				<bpt:fk id="fk_sid-3528A49F-BA6B-4E3C-9EB9-41D358343E64" type=""></bpt:fk>
+			</extensionElements>
+			<dataState id="sid-ed4bb0e3-277d-4565-b52b-2e9b8c66bd07" name="started"/>
+		</dataObject>
+		<dataObject id="sid-85094122-A0BD-4DBB-8EB8-075479FB616C" isCollection="false" name="BTO">
+			<extensionElements>
+				<bpt:pk id="pk_sid-85094122-A0BD-4DBB-8EB8-075479FB616C" type="">btoid</bpt:pk>
+				<bpt:fk id="fk_sid-85094122-A0BD-4DBB-8EB8-075479FB616C" type=""></bpt:fk>
+			</extensionElements>
+			<dataState id="sid-93ee398f-f72a-480b-87a6-0f88be628124" name="started"/>
+		</dataObject>
+		<dataObject id="sid-14801724-483C-49C3-BF3F-71219A209BC3" isCollection="true" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-14801724-483C-49C3-BF3F-71219A209BC3" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-14801724-483C-49C3-BF3F-71219A209BC3" type="">btoid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-6b86b191-848a-44e1-96d9-b223dc0e57c6" name="accepted"/>
+		</dataObject>
+		<dataObject id="sid-431B8BC6-BE93-4238-8E4E-6DE3D7CB749A" isCollection="true" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-431B8BC6-BE93-4238-8E4E-6DE3D7CB749A" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-431B8BC6-BE93-4238-8E4E-6DE3D7CB749A" type="">null</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-7333df3b-1137-4fb9-bca0-49b22071a722" name="received"/>
+		</dataObject>
+		<dataObject id="sid-BCD308C3-52D0-4FFF-9100-AE63AC4B8F7F" isCollection="false" name="Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-BCD308C3-52D0-4FFF-9100-AE63AC4B8F7F" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-BCD308C3-52D0-4FFF-9100-AE63AC4B8F7F" type="">btoid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-f026f8d0-390f-474e-8868-7f7393c89a90" name="accepted"/>
+		</dataObject>
+		<dataObject id="sid-8D52DC15-C2D5-4BF5-942F-F4C01FC8411D" isCollection="true" name="Material Item">
+			<extensionElements>
+				<bpt:pk id="pk_sid-8D52DC15-C2D5-4BF5-942F-F4C01FC8411D" type="new">miid</bpt:pk>
+				<bpt:fk id="fk_sid-8D52DC15-C2D5-4BF5-942F-F4C01FC8411D" type="">oid</bpt:fk>
+				<bpt:fk id="fk2_sid-8D52DC15-C2D5-4BF5-942F-F4C01FC8411D" type="">null</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-f5f29499-7d11-40b6-9f97-46e71e0cad8d" name="partitioned"/>
+		</dataObject>
+		<dataObject id="sid-1E0BA5BB-9AF3-4C83-8913-2C4D93697C87" isCollection="true" name="Material Item">
+			<extensionElements>
+				<bpt:pk id="pk_sid-1E0BA5BB-9AF3-4C83-8913-2C4D93697C87" type="">miid</bpt:pk>
+				<bpt:fk id="fk_sid-1E0BA5BB-9AF3-4C83-8913-2C4D93697C87" type="">oid</bpt:fk>
+				<bpt:fk id="fk2_sid-1E0BA5BB-9AF3-4C83-8913-2C4D93697C87" type="">null</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-9d91f8d6-3473-4624-81a9-1575e3944fc2" name="partitioned"/>
+		</dataObject>
+		<dataObject id="sid-A1F8CE03-E8FA-4B09-A383-1DEF61A4F874" isCollection="true" name="Material Item">
+			<extensionElements>
+				<bpt:pk id="pk_sid-A1F8CE03-E8FA-4B09-A383-1DEF61A4F874" type="">miid</bpt:pk>
+				<bpt:fk id="fk_sid-A1F8CE03-E8FA-4B09-A383-1DEF61A4F874" type="">*oid*</bpt:fk>
+				<bpt:fk id="fk2_sid-A1F8CE03-E8FA-4B09-A383-1DEF61A4F874" type="">null</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-bbf9b483-3f18-40a2-840c-e8752412d60f" name="partitioned"/>
+		</dataObject>
+		<dataObject id="sid-F4C3206E-E1CC-46D5-97B4-C64A39682299" isCollection="true" name="Material Item">
+			<extensionElements>
+				<bpt:pk id="pk_sid-F4C3206E-E1CC-46D5-97B4-C64A39682299" type="">miid</bpt:pk>
+				<bpt:fk id="fk_sid-F4C3206E-E1CC-46D5-97B4-C64A39682299" type="">*oid*</bpt:fk>
+				<bpt:fk id="fk2_sid-F4C3206E-E1CC-46D5-97B4-C64A39682299" type="">moid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-691eb1c9-6f52-4d11-ad9b-fa4c47c85314" name="delivered"/>
+		</dataObject>
+		<dataObject id="sid-77B8C705-A7FA-474B-9EF6-88F5317E04CB" isCollection="true" name="Material Item">
+			<extensionElements>
+				<bpt:pk id="pk_sid-77B8C705-A7FA-474B-9EF6-88F5317E04CB" type="">miid</bpt:pk>
+				<bpt:fk id="fk_sid-77B8C705-A7FA-474B-9EF6-88F5317E04CB" type="">oid</bpt:fk>
+				<bpt:fk id="fk2_sid-77B8C705-A7FA-474B-9EF6-88F5317E04CB" type="">moid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-9de4363a-b290-4179-9369-8e58acfc72d7" name="delivered"/>
+		</dataObject>
+		<dataObject id="sid-77128F93-6465-4BAC-A3B3-533121E399EE" isCollection="true" name="Material Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-77128F93-6465-4BAC-A3B3-533121E399EE" type="new">moid</bpt:pk>
+				<bpt:fk id="fk_sid-77128F93-6465-4BAC-A3B3-533121E399EE" type="">btoid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-fc73b6ce-9ae4-4e8b-bd75-63c4bb065bd4" name="created"/>
+		</dataObject>
+		<dataObject id="pid-77128F93-6465-4BAC-A3B3-533121E399EE" isCollection="true" name="Material Order">
+			<extensionElements>
+				<bpt:pk id="pk_pid-77128F93-6465-4BAC-A3B3-533121E399EE" type="">moid</bpt:pk>
+				<bpt:fk id="fk_pid-77128F93-6465-4BAC-A3B3-533121E399EE" type="">btoid</bpt:fk>
+			</extensionElements>
+			<dataState id="pid-fc73b6ce-9ae4-4e8b-bd75-63c4bb065bd4" name="created"/>
+		</dataObject>
+		<dataObject id="sid-095DBA1C-35D2-461C-B583-E9E534EE5CB6" isCollection="false" name="Material Order">
+			<extensionElements>
+				<bpt:pk id="pk_sid-095DBA1C-35D2-461C-B583-E9E534EE5CB6" type="">moid</bpt:pk>
+				<bpt:fk id="fk_sid-095DBA1C-35D2-461C-B583-E9E534EE5CB6" type="">btoid</bpt:fk>
+			</extensionElements>
+			<dataState id="sid-38cf5865-97a8-4d0e-9f50-88acf7d184b2" name="created"/>
+		</dataObject>
+   </process>
+</definitions>

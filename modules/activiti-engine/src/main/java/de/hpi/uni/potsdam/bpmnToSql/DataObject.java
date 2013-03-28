@@ -11,6 +11,9 @@ public class DataObject {
 	private ArrayList<String> fkeys;
 	private Boolean isCollection = false;
 	
+	//attributed which can be set as arc expression
+	private String processVariable;
+	private String regExpression;
 	
 	public ArrayList<String> getFkeys() {
 		return fkeys;
@@ -48,5 +51,17 @@ public class DataObject {
 	public void setIsCollection(Boolean isCollection) {
 		this.isCollection = isCollection;
 	}
-	
+
+	public String getProcessVariable() {
+		return processVariable;
+	}
+	public void setProcessVariable(String processVariable) {
+		this.processVariable = processVariable;
+	}
+	public String getRegExpression() {
+		return regExpression;
+	}
+	public void setRegExpression(String regExpression) {
+		this.regExpression = regExpression;
+	}
 }
