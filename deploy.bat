@@ -1,0 +1,2 @@
+call mvn -Pdistro,nodocs -Dskiptests clean install
+copy /Y .\modules\activiti-webapp-explorer2\target\activiti-webapp-explorer2-5.11.war D:\MyWorks\courses\ais.ogo_2013_2io71\activiti\apache-tomcat-7.0.34\webapps\activiti-explorer.war

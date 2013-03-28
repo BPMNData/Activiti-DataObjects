@@ -139,6 +139,9 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
 			check = true;
 			for (String query : queryMap.keySet()) {
 				if(dbConnection(query) < queryMap.get(query)) {
+					
+					System.out.println("waiting for "+query);
+					
 					check = false;
 					Thread waiter = new Thread();
                 	waiter.start();
