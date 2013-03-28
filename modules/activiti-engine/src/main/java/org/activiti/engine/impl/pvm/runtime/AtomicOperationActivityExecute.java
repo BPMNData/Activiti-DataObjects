@@ -91,108 +91,8 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
     
     // TODO: BPMN_SQL start
     
-    //get id of scope or process depending whether activity is part of a scope (i.e., subprocess) or the process itself
+	//get id of scope or process depending whether activity is part of a scope (i.e., subprocess) or the process itself
     String dataObjectID = execution.getDataObjectID();
-    
-    
-    System.out.println("====================" + activity.getProperty("type"));
-    
-    if(BpmnParse.getInputData().containsKey(activity.getId())) { //true if activity reads a data object
-    	HashMap<String,ArrayList<DataObject>> dataObjectMap = new HashMap<String, ArrayList<DataObject>>();
-    	//data object with same name are part of same list .. one list for each different data object read by activity
-    	for (DataObject item : BpmnParse.getInputData().get(activity.getId())) {
-			if(dataObjectMap.containsKey(item.getName())) {
-				ArrayList<DataObject> al = dataObjectMap.get(item.getName());
-				al.add(item);
-				dataObjectMap.put(item.getName(), al);
-			} else {
-				ArrayList<DataObject> al = new ArrayList<DataObject>();
-				al.add(item);
-				dataObjectMap.put(item.getName(), al);
-			}
-		}
-    	
-    	
-    	//create SQL queries based on identified pattern 
-    	HashMap<String,Integer> queryMap = new HashMap<String, Integer>();
-    	
-    	for (ArrayList<DataObject> dataObjectList : dataObjectMap.values()) {
-    		String q  = new String();
-			int r;
-			//create SQL query with respect to type of data object (main, dependent, dependent_MI, external_input) 
-			if(DataObjectClassification.isMainDataObject(dataObjectList.get(0), activity.getParent().getId().split(":")[0])) {
-				q = createSqlQuery(dataObjectList, dataObjectID);
-				r=1;
-    		} else if(DataObjectClassification.isDependentDataObjectWithUnspecifiedFK(dataObjectList.get(0), activity.getParent().getId().split(":")[0])) {
-    			
-    			//get primary key of case object because of assumption that all dependent DOs relate to main data object
-    			String caseObjPk = new String();
-    			String caseObjName = BpmnParse.getScopeInformation().get(activity.getParent().getId().split(":")[0]);
-    			for (DataObject caseObj : BpmnParse.getInputData().get(execution.getActivity().getId())){
-    				if (caseObj.getName().equalsIgnoreCase(caseObjName)) {
-    					caseObjPk = caseObj.getPkey();
-    					break;
-    				}
-    			}
-    			
-    			//provide case object of the scope to enable JOINALL; case object is in a map called getScopeInformation which has as key the scope (e.g., process, sub-process) name
-    			q = createSqlQuery(dataObjectList, dataObjectID, BpmnParse.getScopeInformation().get(activity.getParent().getId().split(":")[0]), caseObjPk, "dependent_WithoutFK"); 
-    			r = 1;
-    		} else if(DataObjectClassification.isDependentDataObject(dataObjectList.get(0), activity.getParent().getId().split(":")[0])) {
-    			//provide case object of the scope to enable JOINALL; case object is in a map called getScopeInformation which has as key the scope (e.g., process, sub-process) name
-    			q = createSqlQuery(dataObjectList, dataObjectID, BpmnParse.getScopeInformation().get(activity.getParent().getId().split(":")[0]), "dependent"); 
-    			r = 1;
-    		} else if(DataObjectClassification.isMIDependentDataObject(dataObjectList.get(0), activity.getParent().getId().split(":")[0])) {
-    			q = createSqlQuery(dataObjectList, dataObjectID, BpmnParse.getScopeInformation().get(activity.getParent().getId().split(":")[0]), "dependent_MI"); 
-    			r = numberOfMultipleInstanceInTable(dataObjectList.get(0), dataObjectID, BpmnParse.getScopeInformation().get(activity.getParent().getId().split(":")[0])); //has to be defined
-    		} else {
-    			//non existent data object type identified
-    			q = null;
-    			r = 0;
-    		}
-    	
-			queryMap.put(q,r);
-    		
-    		
-    		
-//    		for (String query : queryList) {
-//    			//while(!dbConnection(query).equalsIgnoreCase(item.getState())) { //wait for correct data state
-//    			while(dbConnection(query) < 1) {
-//                	Thread waiter = new Thread();
-//                	waiter.start();
-//                	try {
-//    					waiter.sleep(10000);
-//    				} catch (InterruptedException e) {
-//    					// TODO Auto-generated catch block
-//    					e.printStackTrace();
-//    				}
-//                }
-//			}
-		}
-    	
-    	//check existence of all input data objects in the correct data states .. if all satisfy the check, the activity can be executed; otherwise, the check is restarted until all satisfy the check
-		Boolean check = false;
-		while(!check) {
-			check = true;
-			for (String query : queryMap.keySet()) {
-				if(dbConnection(query) < queryMap.get(query)) {
-					
-					System.out.println("waiting for "+query);
-					
-					check = false;
-					Thread waiter = new Thread();
-                	waiter.start();
-                	try {
-    					waiter.sleep(10000);
-    				} catch (InterruptedException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}
-                	break; //stop if one input data object fails check
-				}
-			}
-		}
-    }
     
     //if process is an MI-sub-process, the activiti:collection variable is set with the collection of PKs of the given scope object
     // and set sub process key once the sub process is initialized with PK of case object
@@ -246,11 +146,13 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
 	    	
 	    	final String activityId = execution.getActivity().getId();
 	    	final String instanceId = execution.getProcessInstanceId();
+	    	final String activityParentId = execution.getActivity().getParent().getId();
+	    	final String dataObjectID = execution.getDataObjectID();
 	    	final AtomicOperationActivityExecute taskBehavior = this;
 	    	final ActivityExecution pendingExecution = execution;
 	    	final RuntimeService myRuntime = execution.getEngineServices().getRuntimeService();
 	    	
-	    	if (isInputDataAvailable(activityId, instanceId)) {
+	    	if (isInputDataAvailable(activityId, activityParentId, dataObjectID, instanceId)) {
 	    		return false;
 	    	} else {
 		    	if (sqlWaitThread == null) {
@@ -258,7 +160,7 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
 			    	sqlWaitThread = new Thread("SQL wait thread") {
 			    		@Override
 			    		public void run() {
-			    	    	while (!isInputDataAvailable(activityId, instanceId)) {
+			    	    	while (!isInputDataAvailable(activityId, activityParentId, dataObjectID, instanceId)) {
 			    	    		System.out.println("waiting for data for "+activityId);
 		    	            	try {
 		    	            		Thread.sleep(1000);
@@ -300,19 +202,90 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
 	    }
 	}
 	
-	public boolean isInputDataAvailable(String activityId, String instanceId) {
+	public boolean isInputDataAvailable(String activityId, String activityParentId, String dataObjectID, String instanceId) {
 		boolean missingInputData = false;
-		for (DataObject item : BpmnParse.getInputData().get(activityId)) {
-			String currentState = dbConnection(item, instanceId);
-			String expectedState = item.getState();
-			if (!currentState.equalsIgnoreCase(expectedState))
-			{
-				missingInputData = true;
-          	System.out.println("not found: object: " + item.getName() + " for PID: "+instanceId+" in state " + item.getState()+", found "+currentState);
-			} else {
-				System.out.println("found object: " + item.getName() + " for PID: "+instanceId+" in expected state " + item.getState()+"="+currentState);
+ 
+	    if(BpmnParse.getInputData().containsKey(activityId)) { //true if activity reads a data object
+	    	HashMap<String,ArrayList<DataObject>> dataObjectMap = new HashMap<String, ArrayList<DataObject>>();
+	    	//data object with same name are part of same list .. one list for each different data object read by activity
+	    	for (DataObject item : BpmnParse.getInputData().get(activityId)) {
+				if(dataObjectMap.containsKey(item.getName())) {
+					ArrayList<DataObject> al = dataObjectMap.get(item.getName());
+					al.add(item);
+					dataObjectMap.put(item.getName(), al);
+				} else {
+					ArrayList<DataObject> al = new ArrayList<DataObject>();
+					al.add(item);
+					dataObjectMap.put(item.getName(), al);
+				}
 			}
-		}
+	    	
+	    	
+	    	//create SQL queries based on identified pattern 
+	    	HashMap<String,Integer> queryMap = new HashMap<String, Integer>();
+	    	
+	    	for (ArrayList<DataObject> dataObjectList : dataObjectMap.values()) {
+	    		String q  = new String();
+				int r;
+				//create SQL query with respect to type of data object (main, dependent, dependent_MI, external_input) 
+				if(DataObjectClassification.isMainDataObject(dataObjectList.get(0), activityParentId.split(":")[0])) {
+					q = createSqlQuery(dataObjectList, dataObjectID);
+					r=1;
+	    		} else if(DataObjectClassification.isDependentDataObjectWithUnspecifiedFK(dataObjectList.get(0), activityParentId.split(":")[0])) {
+	    			
+	    			//get primary key of case object because of assumption that all dependent DOs relate to main data object
+	    			String caseObjPk = new String();
+	    			String caseObjName = BpmnParse.getScopeInformation().get(activityParentId.split(":")[0]);
+	    			for (DataObject caseObj : BpmnParse.getInputData().get(activityId)){
+	    				if (caseObj.getName().equalsIgnoreCase(caseObjName)) {
+	    					caseObjPk = caseObj.getPkey();
+	    					break;
+	    				}
+	    			}
+	    			
+	    			//provide case object of the scope to enable JOINALL; case object is in a map called getScopeInformation which has as key the scope (e.g., process, sub-process) name
+	    			q = createSqlQuery(dataObjectList, dataObjectID, BpmnParse.getScopeInformation().get(activityParentId.split(":")[0]), caseObjPk, "dependent_WithoutFK"); 
+	    			r = 1;
+	    		} else if(DataObjectClassification.isDependentDataObject(dataObjectList.get(0), activityParentId.split(":")[0])) {
+	    			//provide case object of the scope to enable JOINALL; case object is in a map called getScopeInformation which has as key the scope (e.g., process, sub-process) name
+	    			q = createSqlQuery(dataObjectList, dataObjectID, BpmnParse.getScopeInformation().get(activityParentId.split(":")[0]), "dependent"); 
+	    			r = 1;
+	    		} else if(DataObjectClassification.isMIDependentDataObject(dataObjectList.get(0), activityParentId.split(":")[0])) {
+	    			q = createSqlQuery(dataObjectList, dataObjectID, BpmnParse.getScopeInformation().get(activityParentId.split(":")[0]), "dependent_MI"); 
+	    			r = numberOfMultipleInstanceInTable(dataObjectList.get(0), dataObjectID, BpmnParse.getScopeInformation().get(activityParentId.split(":")[0])); //has to be defined
+	    		} else {
+	    			//non existent data object type identified
+	    			q = null;
+	    			r = 0;
+	    		}
+	    	
+				queryMap.put(q,r);
+	    		
+	    		
+	    		
+//	    		for (String query : queryList) {
+//	    			//while(!dbConnection(query).equalsIgnoreCase(item.getState())) { //wait for correct data state
+//	    			while(dbConnection(query) < 1) {
+//	                	Thread waiter = new Thread();
+//	                	waiter.start();
+//	                	try {
+//	    					waiter.sleep(10000);
+//	    				} catch (InterruptedException e) {
+//	    					// TODO Auto-generated catch block
+//	    					e.printStackTrace();
+//	    				}
+//	                }
+//				}
+			}
+	    	
+	    	//check existence of all input data objects in the correct data states .. if all satisfy the check, the activity can be executed; otherwise, the check is restarted until all satisfy the check
+			for (String query : queryMap.keySet()) {
+				if(dbConnection(query) < queryMap.get(query)) {
+					missingInputData = true;
+					System.out.println("waiting for "+query);
+				}
+			}
+	    }
 		return missingInputData == false;
 	}
 	
