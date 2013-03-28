@@ -51,7 +51,6 @@ public class DataObject {
 	public void setIsCollection(Boolean isCollection) {
 		this.isCollection = isCollection;
 	}
-
 	public String getProcessVariable() {
 		return processVariable;
 	}
