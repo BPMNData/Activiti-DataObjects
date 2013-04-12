@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.logging.Level;
 
 import org.activiti.engine.delegate.DelegateExecution;
@@ -20,10 +21,25 @@ public class MappingMItoMO implements JavaDelegate {
 		ArrayList<String> miIds = new ArrayList<String>();
 		HashMap<String, String> matchingMap = new HashMap<String,String>();
 		
-		moIds = dbConnectionSelect("SELECT `moid` FROM `material order` WHERE `state` = \"created\"");
-		miIds = dbConnectionSelect("SELECT `miid` FROM `material item` WHERE `state` = \"partitioned\"");
+		moIds = dbConnectionSelect("SELECT `moid` FROM `Material Order` WHERE `state` = \"created\"");
+		miIds = dbConnectionSelect("SELECT `miid` FROM `Material Item` WHERE `state` = \"partitioned\"");
+		
+		for (String materialOrder : moIds) {
+			int index = -1;
+			while (index < 0) {
+				Random r = new Random();
+				index = r.nextInt(miIds.size());
+				if (matchingMap.containsKey(miIds.get(index))) index = -1;
+			}
+			
+			matchingMap.put(miIds.get(index), materialOrder);
+			System.out.println(miIds.get(index) +  "  -->  "+materialOrder);
+		}
 		
 		for (String materialItem : miIds) {
+			
+			if (matchingMap.containsKey(materialItem)) continue;
+			
 			Double fragment = 100./moIds.size();
 			Long randValue = Math.round(Math.random()*100);
 			int randomIndex = -1;
@@ -35,9 +51,10 @@ public class MappingMItoMO implements JavaDelegate {
 			}
 			
 			matchingMap.put(materialItem, moIds.get(randomIndex));
+			System.out.println(materialItem +  "  -->  "+moIds.get(randomIndex));
 		}
 		
-		String query = "INSERT INTO `productdb`(`miid`, `moid`) VALUES";
+		String query = "INSERT IGNORE INTO `ProductDB`(`miid`, `moid`) VALUES";
 		
 		for (String matchingItem : matchingMap.keySet()) {
 			query = query + "(\""+matchingItem+"\" , \""+matchingMap.get(matchingItem) +"\"),";

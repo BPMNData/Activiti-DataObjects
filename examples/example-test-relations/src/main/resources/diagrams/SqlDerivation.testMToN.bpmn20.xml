@@ -15,7 +15,7 @@
 			 typeLanguage="http://www.w3.org/2001/XMLSchema" 
 			 xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
 	
-	<process id="mToN" name="BPMNData Automatic Test m:n (see console)" isExecutable="true">
+	<process id="mToN" name="BPMN Data Test m:n (requires update in DB, see console)">
 		<extensionElements>
 			<bpt:scopeInformation id="mainProcess" caseObject="BTO" />
 		</extensionElements>

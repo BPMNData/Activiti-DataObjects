@@ -15,14 +15,18 @@ public class QueryProductDB implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		
 		ArrayList<String> dbResults = new ArrayList<String>();
-		System.out.println(execution.getVariable("moid"));
-		dbResults = dbConnectionSelect("SELECT `miid` FROM `productdb` WHERE `moid` = \"" + execution.getVariable("moid") + "\"");
+		System.out.println("moid = "+execution.getVariableLocal("moid"));
+		dbResults = dbConnectionSelect("SELECT `miid` FROM `ProductDB` WHERE `moid` = \"" + execution.getVariableLocal("moid") + "\"");
+		
+		System.out.println("RESULT: "+dbResults);
 		
 		String matchingMIs = "(`miid` = \"";
 		
 		for (String result : dbResults) {
 			matchingMIs = matchingMIs + result +"\" OR `miid` = \"";
 		}
+		
+		System.out.println(matchingMIs);
 		
 		matchingMIs = matchingMIs.substring(0, matchingMIs.lastIndexOf("OR")-1) + ")";
 		

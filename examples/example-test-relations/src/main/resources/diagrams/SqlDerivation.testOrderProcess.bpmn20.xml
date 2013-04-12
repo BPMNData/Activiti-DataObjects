@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+				 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+				 xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" 
+				 xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" 
+				 xmlns:signavio="http://www.signavio.com" 
+				 xmlns:activiti="http://activiti.org/bpmn"
+		 	     xmlns:bpt="http://bpt.uni-potsdam.de"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+				 exporter="Signavio Process Editor, http://www.signavio.com" 
+				 exporterVersion="6.7.5" 
+				 expressionLanguage="http://www.w3.org/1999/XPath" 
+				 id="sid-4c1d663f-62fd-4cc7-840d-92ea186c9e82" 
+				 targetNamespace="http://www.signavio.com/bpmn20" 
+				 typeLanguage="http://www.w3.org/2001/XMLSchema" 
+				 xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+   <process id="Order" name="BPMN Data Test: Order">
+	  <extensionElements>
+			<bpt:scopeInformation id="mainProcess" caseObject="Order" />
+	  </extensionElements>
+       <startEvent id="sid-B3E1FAF0-269E-4555-8F3A-BD0CF902E333">
+      </startEvent>
+	  <userTask id="sid-E737E440-FD12-4DA1-B57B-2696852245F8" name="Receive&#10;Order" activiti:assignee="kermit">
+		 <documentation>
+			By executing this activity a new "Order" entry in state "received" and with the process instance id 
+			as primary key value will be inserted (see consoles). 
+		 </documentation>
+         <dataOutputAssociation id="sid-4D67AF27-CA92-4A94-AE8C-9F6F3324F6E7">
+            <sourceRef>sid-E737E440-FD12-4DA1-B57B-2696852245F8</sourceRef>
+            <targetRef>sid-E33E0917-03F4-4936-9BCC-DE8F4B02A750</targetRef>
+         </dataOutputAssociation>
+      </userTask>
+	  <userTask completionQuantity="1" id="sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC" name="Check Product Availability" activiti:assignee="kermit">
+         <documentation>
+			This activity could be started, because a "Order" entry exists for this process instance in state "received".
+			
+			Please decide whether the product for this order is available or not available.
+			
+			By executing this activity a new "Product" entry in your selected state and with the process instance id 
+			as primary key value will be inserted (see consoles).
+		 </documentation> 
+		 <extensionElements>
+			<activiti:formProperty id="availability" name="Availability" value="${availability}" type="enum" required="true">
+				<activiti:value id="available" name="available" />
+				<activiti:value id="not available" name="not available" />
+			</activiti:formProperty>
+		 </extensionElements>
+		 <dataInputAssociation id="sid-834B7069-182B-41AF-8F2A-B74A96BEA32A">
+            <sourceRef>sid-12E20F57-0829-415D-BFAA-8CD9A453BAF0</sourceRef>
+            <targetRef>sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC</targetRef>
+         </dataInputAssociation>
+         <dataOutputAssociation id="sid-E30C5407-3140-4475-B4D3-1C7A7201777E">
+            <sourceRef>sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC</sourceRef>
+            <targetRef>sid-EBC63899-9F96-48C3-9EDF-F0944344F672</targetRef>
+         </dataOutputAssociation>
+         <!--dataOutputAssociation id="sid-4E743B34-2782-47B5-8FED-D24D9CEEC458">
+            <sourceRef>sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC</sourceRef>
+            <targetRef>sid-27056109-177F-4DBC-BE67-314974719EE3</targetRef>
+         </dataOutputAssociation-->
+      </userTask>
+	  <exclusiveGateway gatewayDirection="Diverging" id="sid-1D17982F-3874-4B10-8CE4-A9C66DA41C87">
+      </exclusiveGateway>
+	  <userTask id="sid-6640879D-E2C4-499B-A16B-AC1160D8194F" name="Order Raw Material" activiti:assignee="kermit">
+		 <documentation>
+			This activity could be started, because the "Product" entry for this process instance is in state "not available".
+			By executing this activity a new "Raw Material" entry in state "available" and with the process instance id 
+			as primary key value will be inserted (see consoles). 
+		 </documentation>
+         <dataInputAssociation id="sid-5FCF6D5C-793E-4D53-9C10-5953B55B5DC5">
+            <sourceRef>sid-0BEEEF29-D856-435F-B644-9C52B27A8387</sourceRef>
+            <targetRef>sid-6640879D-E2C4-499B-A16B-AC1160D8194F</targetRef>
+         </dataInputAssociation>
+         <dataOutputAssociation id="sid-AC97A0C1-F57A-4CA8-82CE-98FBC6A33DCD">
+            <sourceRef>sid-6640879D-E2C4-499B-A16B-AC1160D8194F</sourceRef>
+            <targetRef>sid-885EDC47-9107-42FB-83D4-C6E7D2A64A9B</targetRef>
+         </dataOutputAssociation>
+      </userTask>
+	  <userTask id="sid-1A73836D-DEE9-4CFD-8787-19D6C79A2286" name="Manufacture Product" activiti:assignee="kermit">
+		 <documentation>
+			This activity could be started, because a "Raw Material" entry exists for this process instance in state "available".
+			By executing this activity the "Product" entry is updated to state "available" (see consoles). 
+		 </documentation>
+         <dataInputAssociation id="sid-CAF7137F-DAF9-4CFF-A841-5DE04D55256E">
+            <sourceRef>sid-F9A124B9-CCF9-4059-97D9-00E64519E43C</sourceRef>
+            <targetRef>sid-1A73836D-DEE9-4CFD-8787-19D6C79A2286</targetRef>
+         </dataInputAssociation>
+         <dataOutputAssociation id="sid-13ABF544-19CF-4C95-86F3-9A7DFB48A937">
+            <sourceRef>sid-1A73836D-DEE9-4CFD-8787-19D6C79A2286</sourceRef>
+            <targetRef>sid-CAD77829-4124-4F44-9551-D0ACEC4EA4ED</targetRef>
+          </dataOutputAssociation>
+      </userTask>
+      <exclusiveGateway gatewayDirection="Converging" id="sid-81B9782C-2CAB-4677-88C7-7D3C7568556B">
+      </exclusiveGateway>
+      <userTask id="sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049" name="Ship Product" activiti:assignee="kermit">
+		<documentation>
+			This activity could be started, because a "Product" entry exists for this process instance in state "available".
+			By executing this activity the "Product" and the "Order" entry is updated to state "shipped" and a new "Shipment" 
+			entry in state "created" and with the process instance id as primary key value will be inserted(see consoles). 
+		 </documentation>
+         <dataInputAssociation id="sid-F862661E-124D-49AE-8109-D78DD4AC9DBC">
+            <sourceRef>sid-1CFBAD76-8BBB-4707-BC7A-D5C1C7F7D3FE</sourceRef>
+            <targetRef>sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049</targetRef>
+         </dataInputAssociation>
+         <dataOutputAssociation id="sid-0C085BEF-5EC1-45A7-849F-0DF8C1FD9D26">
+            <sourceRef>sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049</sourceRef>
+            <targetRef>sid-972F6AE0-36A7-4B27-864D-D4F1F69BA1B4</targetRef>
+         </dataOutputAssociation>
+         <dataOutputAssociation id="sid-9A7E88D6-9E0C-4FA9-A0FE-2A83C31547AF">
+            <sourceRef>sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049</sourceRef>
+            <targetRef>sid-8452C1D3-5AD0-43D7-8C9F-0BC9DB809D7F</targetRef>
+         </dataOutputAssociation>
+         <dataOutputAssociation id="sid-DBDEC9E6-0665-4F5A-97D0-659E13A8C77E">
+            <sourceRef>sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049</sourceRef>
+            <targetRef>sid-DFFF7F52-BF90-454F-A517-887322756327</targetRef>
+         </dataOutputAssociation>
+      </userTask>
+      <userTask id="sid-C9ABC633-5409-4755-96B5-F04150BAF3E9" name="Archive Order" activiti:assignee="kermit">
+		<documentation>
+			This activity could be started, because a "Order" entry exists for this process instance in state "shipped".
+			By executing this activity the "Order" entry is updated to state "archieved"(see consoles). 
+		 </documentation>
+         <dataInputAssociation id="sid-45A9CFDF-1481-4CAA-8C91-383D8635CFE8">
+            <sourceRef>sid-DFFF7F52-BF90-454F-A517-887322756327</sourceRef>
+            <targetRef>sid-C9ABC633-5409-4755-96B5-F04150BAF3E9</targetRef>
+         </dataInputAssociation>
+         <dataOutputAssociation id="sid-BBF5F09E-B0A7-438F-82DD-51C44A2DF255">
+            <sourceRef>sid-C9ABC633-5409-4755-96B5-F04150BAF3E9</sourceRef>
+            <targetRef>sid-148215B8-F924-4E9C-A559-A6C13FB7C6BD</targetRef>
+         </dataOutputAssociation>
+      </userTask>
+      <endEvent id="sid-54CCB83F-ACC2-4545-8FD3-7C3F0A188B24">
+      </endEvent>
+      <sequenceFlow id="sid-257C27A0-8D38-4B0E-8D41-EC111ECE0A19" isImmediate="true" sourceRef="sid-E737E440-FD12-4DA1-B57B-2696852245F8" targetRef="sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC">
+      </sequenceFlow>
+      <sequenceFlow id="sid-B42CB8CD-D4EB-48F4-8942-AE5003845588" isImmediate="true" sourceRef="sid-C9ABC633-5409-4755-96B5-F04150BAF3E9" targetRef="sid-54CCB83F-ACC2-4545-8FD3-7C3F0A188B24">
+      </sequenceFlow>
+      <sequenceFlow id="sid-7E6303FD-15EE-44D4-85EF-3814079B7F7C" isImmediate="true" sourceRef="sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049" targetRef="sid-C9ABC633-5409-4755-96B5-F04150BAF3E9">
+      </sequenceFlow>
+      <sequenceFlow id="sid-7662ED2C-06FF-432E-8829-8BB45B7087BD" isImmediate="true" sourceRef="sid-1A73836D-DEE9-4CFD-8787-19D6C79A2286" targetRef="sid-81B9782C-2CAB-4677-88C7-7D3C7568556B">
+      </sequenceFlow>
+      <sequenceFlow id="sid-2C6A3B8D-B4E6-4748-BB0E-A7FA25EA167C" isImmediate="true" sourceRef="sid-81B9782C-2CAB-4677-88C7-7D3C7568556B" targetRef="sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049">
+      </sequenceFlow>
+      <sequenceFlow id="sid-7CC4EDF0-2737-4040-BD3C-1A8169708075" isImmediate="true" sourceRef="sid-6640879D-E2C4-499B-A16B-AC1160D8194F" targetRef="sid-1A73836D-DEE9-4CFD-8787-19D6C79A2286">
+      </sequenceFlow>
+      <sequenceFlow id="sid-30414F63-7EBA-47BF-BEF9-DA0456A74EAD" isImmediate="true" sourceRef="sid-B3E1FAF0-269E-4555-8F3A-BD0CF902E333" targetRef="sid-E737E440-FD12-4DA1-B57B-2696852245F8">
+      </sequenceFlow>
+      <sequenceFlow id="sid-8C67EBA4-2F17-462C-BB7F-8B2143A06E77" isImmediate="true" sourceRef="sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC" targetRef="sid-1D17982F-3874-4B10-8CE4-A9C66DA41C87">
+      </sequenceFlow>
+      <sequenceFlow id="sid-B6FD9343-849F-4950-9DA4-CE0EF950186C" isImmediate="true" name="Product [available]" sourceRef="sid-1D17982F-3874-4B10-8CE4-A9C66DA41C87" targetRef="sid-81B9782C-2CAB-4677-88C7-7D3C7568556B">
+		<conditionExpression xsi:type="tFormalExpression">${availability == 'available'}</conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="sid-178C7E71-1093-4DC9-9A55-68511811FDD5" isImmediate="true" name="Product [not available]" sourceRef="sid-1D17982F-3874-4B10-8CE4-A9C66DA41C87" targetRef="sid-6640879D-E2C4-499B-A16B-AC1160D8194F">
+      </sequenceFlow>
+      <dataObject id="sid-E33E0917-03F4-4936-9BCC-DE8F4B02A750" isCollection="false" name="Order">
+          <extensionElements>
+				<bpt:pk id="pk_sid-E33E0917-03F4-4936-9BCC-DE8F4B02A750" type="new">oid</bpt:pk>
+				<bpt:fk id="fk_sid-E33E0917-03F4-4936-9BCC-DE8F4B02A750" type=""></bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-E33E0917-03F4-4936-9BCC-DE8F4B02A750" name="received"/>
+      </dataObject>
+	  <dataObject id="sid-12E20F57-0829-415D-BFAA-8CD9A453BAF0" isCollection="false" name="Order">
+          <extensionElements>
+				<bpt:pk id="pk_sid-12E20F57-0829-415D-BFAA-8CD9A453BAF0" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-12E20F57-0829-415D-BFAA-8CD9A453BAF0" type=""></bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-12E20F57-0829-415D-BFAA-8CD9A453BAF0" name="received"/>
+      </dataObject>
+	  <dataObject id="sid-EBC63899-9F96-48C3-9EDF-F0944344F672" isCollection="false" name="Product">
+         <extensionElements>
+				<bpt:pk id="pk_sid-EBC63899-9F96-48C3-9EDF-F0944344F672" type="new">pid</bpt:pk>
+				<bpt:fk id="fk_sid-EBC63899-9F96-48C3-9EDF-F0944344F672" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-EBC63899-9F96-48C3-9EDF-F0944344F672" name="$availability"/>
+      </dataObject>
+      <!--dataObject id="sid-27056109-177F-4DBC-BE67-314974719EE3" isCollection="false" name="Product">
+         <extensionElements>
+				<bpt:pk id="pk_sid-27056109-177F-4DBC-BE67-314974719EE3" type="new">pid</bpt:pk>
+				<bpt:fk id="fk_sid-27056109-177F-4DBC-BE67-314974719EE3" type="">oid</bpt:fk>
+		 </extensionElements>
+		 <dataState id="state_sid-27056109-177F-4DBC-BE67-314974719EE3" name="not available"/>
+      </dataObject-->
+	  <dataObject id="sid-0BEEEF29-D856-435F-B644-9C52B27A8387" isCollection="false" name="Product">
+         <extensionElements>
+				<bpt:pk id="pk_sid-0BEEEF29-D856-435F-B644-9C52B27A8387" type="">pid</bpt:pk>
+				<bpt:fk id="fk_sid-0BEEEF29-D856-435F-B644-9C52B27A8387" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-0BEEEF29-D856-435F-B644-9C52B27A8387" name="not available"/>
+      </dataObject>
+      <dataObject id="sid-885EDC47-9107-42FB-83D4-C6E7D2A64A9B" isCollection="false" name="Raw Material">
+        <extensionElements>
+				<bpt:pk id="pk_sid-885EDC47-9107-42FB-83D4-C6E7D2A64A9B" type="new">mid</bpt:pk>
+				<bpt:fk id="fk_sid-885EDC47-9107-42FB-83D4-C6E7D2A64A9B" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-885EDC47-9107-42FB-83D4-C6E7D2A64A9B" name="available"/>
+      </dataObject>
+      <dataObject id="sid-F9A124B9-CCF9-4059-97D9-00E64519E43C" isCollection="false" name="Raw Material">
+         <extensionElements>
+				<bpt:pk id="pk_sid-F9A124B9-CCF9-4059-97D9-00E64519E43C" type="">mid</bpt:pk>
+				<bpt:fk id="fk_sid-F9A124B9-CCF9-4059-97D9-00E64519E43C" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-F9A124B9-CCF9-4059-97D9-00E64519E43C" name="available"/>
+      </dataObject>
+	  <dataObject id="sid-CAD77829-4124-4F44-9551-D0ACEC4EA4ED" isCollection="false" name="Product">
+         <extensionElements>
+				<bpt:pk id="pk_sid-CAD77829-4124-4F44-9551-D0ACEC4EA4ED" type="">pid</bpt:pk>
+				<bpt:fk id="fk_sid-CAD77829-4124-4F44-9551-D0ACEC4EA4ED" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-CAD77829-4124-4F44-9551-D0ACEC4EA4ED" name="available"/>
+      </dataObject>
+	  <dataObject id="sid-1CFBAD76-8BBB-4707-BC7A-D5C1C7F7D3FE" isCollection="false" name="Product">
+         <extensionElements>
+				<bpt:pk id="pk_sid-1CFBAD76-8BBB-4707-BC7A-D5C1C7F7D3FE" type="">pid</bpt:pk>
+				<bpt:fk id="fk_sid-1CFBAD76-8BBB-4707-BC7A-D5C1C7F7D3FE" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-1CFBAD76-8BBB-4707-BC7A-D5C1C7F7D3FE" name="available"/>
+      </dataObject>
+      <dataObject id="sid-972F6AE0-36A7-4B27-864D-D4F1F69BA1B4" isCollection="false" name="Shipment">
+         <extensionElements>
+				<bpt:pk id="pk_sid-972F6AE0-36A7-4B27-864D-D4F1F69BA1B4" type="new">sid</bpt:pk>
+				<bpt:fk id="fk_sid-972F6AE0-36A7-4B27-864D-D4F1F69BA1B4" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-972F6AE0-36A7-4B27-864D-D4F1F69BA1B4" name="created"/>
+      </dataObject>
+      <dataObject id="sid-8452C1D3-5AD0-43D7-8C9F-0BC9DB809D7F" isCollection="false" name="Product">
+         <extensionElements>
+				<bpt:pk id="pk_sid-8452C1D3-5AD0-43D7-8C9F-0BC9DB809D7F" type="">pid</bpt:pk>
+				<bpt:fk id="fk_sid-8452C1D3-5AD0-43D7-8C9F-0BC9DB809D7F" type="">oid</bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-8452C1D3-5AD0-43D7-8C9F-0BC9DB809D7F" name="shipped"/>
+      </dataObject>
+	  <dataObject id="sid-DFFF7F52-BF90-454F-A517-887322756327" isCollection="false" name="Order">
+         <extensionElements>
+				<bpt:pk id="pk_sid-DFFF7F52-BF90-454F-A517-887322756327" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-DFFF7F52-BF90-454F-A517-887322756327" type=""></bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-DFFF7F52-BF90-454F-A517-887322756327" name="shipped"/>
+      </dataObject>
+      <dataObject id="sid-148215B8-F924-4E9C-A559-A6C13FB7C6BD" isCollection="false" name="Order">
+         <extensionElements>
+				<bpt:pk id="pk_sid-148215B8-F924-4E9C-A559-A6C13FB7C6BD" type="">oid</bpt:pk>
+				<bpt:fk id="fk_sid-148215B8-F924-4E9C-A559-A6C13FB7C6BD" type=""></bpt:fk>
+		 </extensionElements>
+         <dataState id="state_sid-148215B8-F924-4E9C-A559-A6C13FB7C6BD" name="archived"/>
+      </dataObject>
+   </process>
+   <bpmndi:BPMNDiagram id="sid-3aaaa439-f1bc-450a-b67c-de58c78b709a">
+      <bpmndi:BPMNPlane bpmnElement="sid-7C299DB7-2ACE-402C-BE1E-1C7A52256901" id="sid-b67849af-3e45-4631-bdfa-1c232070ac62">
+         <bpmndi:BPMNShape bpmnElement="sid-1A73836D-DEE9-4CFD-8787-19D6C79A2286" id="sid-1A73836D-DEE9-4CFD-8787-19D6C79A2286_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="690.0" y="495.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-6640879D-E2C4-499B-A16B-AC1160D8194F" id="sid-6640879D-E2C4-499B-A16B-AC1160D8194F_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="539.0" y="495.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC" id="sid-25BB0B13-C360-44F1-8319-345FFAE2B0DC_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="320.0" y="318.601227141566"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-1D17982F-3874-4B10-8CE4-A9C66DA41C87" id="sid-1D17982F-3874-4B10-8CE4-A9C66DA41C87_gui" isMarkerVisible="true">
+            <omgdc:Bounds height="40.0" width="40.0" x="465.0" y="338.601227141566"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-81B9782C-2CAB-4677-88C7-7D3C7568556B" id="sid-81B9782C-2CAB-4677-88C7-7D3C7568556B_gui" isMarkerVisible="true">
+            <omgdc:Bounds height="40.0" width="40.0" x="805.0" y="338.601227141566"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049" id="sid-2914EBD9-7D51-44E6-83B6-29D46FBF9049_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="895.0" y="318.601227141566"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-C9ABC633-5409-4755-96B5-F04150BAF3E9" id="sid-C9ABC633-5409-4755-96B5-F04150BAF3E9_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="1095.0" y="318.601227141566"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-54CCB83F-ACC2-4545-8FD3-7C3F0A188B24" id="sid-54CCB83F-ACC2-4545-8FD3-7C3F0A188B24_gui">
+            <omgdc:Bounds height="28.0" width="28.0" x="1245.0" y="344.601227141566"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-B3E1FAF0-269E-4555-8F3A-BD0CF902E333" id="sid-B3E1FAF0-269E-4555-8F3A-BD0CF902E333_gui">
+            <omgdc:Bounds height="30.0" width="30.0" x="106.0" y="104.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-E737E440-FD12-4DA1-B57B-2696852245F8" id="sid-E737E440-FD12-4DA1-B57B-2696852245F8_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="195.0" y="78.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-0BEEEF29-D856-435F-B644-9C52B27A8387" id="sid-0BEEEF29-D856-435F-B644-9C52B27A8387_gui">
+            <omgdc:Bounds height="97.0" width="117.03999951534263" x="401.1499936388732" y="582.2146102230237"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-CAD77829-4124-4F44-9551-D0ACEC4EA4ED" id="sid-CAD77829-4124-4F44-9551-D0ACEC4EA4ED_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="810.0" y="590.6646214307233"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-885EDC47-9107-42FB-83D4-C6E7D2A64A9B" id="sid-885EDC47-9107-42FB-83D4-C6E7D2A64A9B_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="559.0908969729403" y="610.6646214307233"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-F9A124B9-CCF9-4059-97D9-00E64519E43C" id="sid-F9A124B9-CCF9-4059-97D9-00E64519E43C_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="670.454544902833" y="610.6646214307233"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-EBC63899-9F96-48C3-9EDF-F0944344F672" id="sid-EBC63899-9F96-48C3-9EDF-F0944344F672_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="379.0909013078234" y="189.4909042640403"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-972F6AE0-36A7-4B27-864D-D4F1F69BA1B4" id="sid-972F6AE0-36A7-4B27-864D-D4F1F69BA1B4_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="975.0" y="190.3999951534272"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-8452C1D3-5AD0-43D7-8C9F-0BC9DB809D7F" id="sid-8452C1D3-5AD0-43D7-8C9F-0BC9DB809D7F_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="873.6363635575476" y="190.3999951534272"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-148215B8-F924-4E9C-A559-A6C13FB7C6BD" id="sid-148215B8-F924-4E9C-A559-A6C13FB7C6BD_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="1185.0" y="190.3999951534272"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-1CFBAD76-8BBB-4707-BC7A-D5C1C7F7D3FE" id="sid-1CFBAD76-8BBB-4707-BC7A-D5C1C7F7D3FE_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="770.0" y="210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-12E20F57-0829-415D-BFAA-8CD9A453BAF0" id="sid-12E20F57-0829-415D-BFAA-8CD9A453BAF0_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="120.0" y="315.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-DFFF7F52-BF90-454F-A517-887322756327" id="sid-DFFF7F52-BF90-454F-A517-887322756327_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="1080.0" y="190.3999951534272"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="sid-E33E0917-03F4-4936-9BCC-DE8F4B02A750" id="sid-E33E0917-03F4-4936-9BCC-DE8F4B02A750_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="330.0" y="54.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="sid-5FCF6D5C-793E-4D53-9C10-5953B55B5DC5" id="sid-5FCF6D5C-793E-4D53-9C10-5953B55B5DC5_gui">
+            <omgdi:waypoint x="518.0" y="587.0"/>
+            <omgdi:waypoint x="539.0" y="571.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-257C27A0-8D38-4B0E-8D41-EC111ECE0A19" id="sid-257C27A0-8D38-4B0E-8D41-EC111ECE0A19_gui">
+            <omgdi:waypoint x="245.0" y="158.0"/>
+            <omgdi:waypoint x="245.0" y="358.601227141566"/>
+            <omgdi:waypoint x="320.0" y="358.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-13ABF544-19CF-4C95-86F3-9A7DFB48A937" id="sid-13ABF544-19CF-4C95-86F3-9A7DFB48A937_gui">
+            <omgdi:waypoint x="790.0" y="575.0"/>
+            <omgdi:waypoint x="810.0" y="604.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-45A9CFDF-1481-4CAA-8C91-383D8635CFE8" id="sid-45A9CFDF-1481-4CAA-8C91-383D8635CFE8_gui">
+            <omgdi:waypoint x="1132.0" y="287.0"/>
+            <omgdi:waypoint x="1138.0" y="318.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-B42CB8CD-D4EB-48F4-8942-AE5003845588" id="sid-B42CB8CD-D4EB-48F4-8942-AE5003845588_gui">
+            <omgdi:waypoint x="1195.0" y="358.0"/>
+            <omgdi:waypoint x="1245.0" y="358.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-7E6303FD-15EE-44D4-85EF-3814079B7F7C" id="sid-7E6303FD-15EE-44D4-85EF-3814079B7F7C_gui">
+            <omgdi:waypoint x="995.0" y="358.0"/>
+            <omgdi:waypoint x="1095.0" y="358.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-7662ED2C-06FF-432E-8829-8BB45B7087BD" id="sid-7662ED2C-06FF-432E-8829-8BB45B7087BD_gui">
+            <omgdi:waypoint x="790.0" y="534.0"/>
+            <omgdi:waypoint x="825.5" y="534.6646214307233"/>
+            <omgdi:waypoint x="825.0" y="378.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-2C6A3B8D-B4E6-4748-BB0E-A7FA25EA167C" id="sid-2C6A3B8D-B4E6-4748-BB0E-A7FA25EA167C_gui">
+            <omgdi:waypoint x="845.0" y="358.0"/>
+            <omgdi:waypoint x="895.0" y="358.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-DBDEC9E6-0665-4F5A-97D0-659E13A8C77E" id="sid-DBDEC9E6-0665-4F5A-97D0-659E13A8C77E_gui">
+            <omgdi:waypoint x="995.0" y="342.0"/>
+            <omgdi:waypoint x="1057.5" y="320.0"/>
+            <omgdi:waypoint x="1084.0" y="287.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-7CC4EDF0-2737-4040-BD3C-1A8169708075" id="sid-7CC4EDF0-2737-4040-BD3C-1A8169708075_gui">
+            <omgdi:waypoint x="639.0" y="534.0"/>
+            <omgdi:waypoint x="690.0" y="534.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-AC97A0C1-F57A-4CA8-82CE-98FBC6A33DCD" id="sid-AC97A0C1-F57A-4CA8-82CE-98FBC6A33DCD_gui">
+            <omgdi:waypoint x="593.0" y="575.0"/>
+            <omgdi:waypoint x="598.0" y="610.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-4D67AF27-CA92-4A94-AE8C-9F6F3324F6E7" id="sid-4D67AF27-CA92-4A94-AE8C-9F6F3324F6E7_gui">
+            <omgdi:waypoint x="295.0" y="118.0"/>
+            <omgdi:waypoint x="330.0" y="102.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-E30C5407-3140-4475-B4D3-1C7A7201777E" id="sid-E30C5407-3140-4475-B4D3-1C7A7201777E_gui">
+            <omgdi:waypoint x="391.0" y="318.0"/>
+            <omgdi:waypoint x="404.0" y="286.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-BBF5F09E-B0A7-438F-82DD-51C44A2DF255" id="sid-BBF5F09E-B0A7-438F-82DD-51C44A2DF255_gui">
+            <omgdi:waypoint x="1195.0" y="323.0"/>
+            <omgdi:waypoint x="1229.0" y="287.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-0C085BEF-5EC1-45A7-849F-0DF8C1FD9D26" id="sid-0C085BEF-5EC1-45A7-849F-0DF8C1FD9D26_gui">
+            <omgdi:waypoint x="964.0" y="318.0"/>
+            <omgdi:waypoint x="995.0" y="287.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-9A7E88D6-9E0C-4FA9-A0FE-2A83C31547AF" id="sid-9A7E88D6-9E0C-4FA9-A0FE-2A83C31547AF_gui">
+            <omgdi:waypoint x="948.0" y="318.0"/>
+            <omgdi:waypoint x="942.0" y="287.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-30414F63-7EBA-47BF-BEF9-DA0456A74EAD" id="sid-30414F63-7EBA-47BF-BEF9-DA0456A74EAD_gui">
+            <omgdi:waypoint x="136.0" y="119.0"/>
+            <omgdi:waypoint x="195.0" y="118.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-8C67EBA4-2F17-462C-BB7F-8B2143A06E77" id="sid-8C67EBA4-2F17-462C-BB7F-8B2143A06E77_gui">
+            <omgdi:waypoint x="420.0" y="358.0"/>
+            <omgdi:waypoint x="465.0" y="358.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-CAF7137F-DAF9-4CFF-A841-5DE04D55256E" id="sid-CAF7137F-DAF9-4CFF-A841-5DE04D55256E_gui">
+            <omgdi:waypoint x="724.0" y="610.0"/>
+            <omgdi:waypoint x="732.0" y="575.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-F862661E-124D-49AE-8109-D78DD4AC9DBC" id="sid-F862661E-124D-49AE-8109-D78DD4AC9DBC_gui">
+            <omgdi:waypoint x="858.0" y="291.0"/>
+            <omgdi:waypoint x="895.0" y="319.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-834B7069-182B-41AF-8F2A-B74A96BEA32A" id="sid-834B7069-182B-41AF-8F2A-B74A96BEA32A_gui">
+            <omgdi:waypoint x="208.0" y="379.0"/>
+            <omgdi:waypoint x="261.5" y="399.0"/>
+            <omgdi:waypoint x="320.0" y="376.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-B6FD9343-849F-4950-9DA4-CE0EF950186C" id="sid-B6FD9343-849F-4950-9DA4-CE0EF950186C_gui">
+            <omgdi:waypoint x="505.0" y="358.0"/>
+            <omgdi:waypoint x="805.0" y="358.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="sid-178C7E71-1093-4DC9-9A55-68511811FDD5" id="sid-178C7E71-1093-4DC9-9A55-68511811FDD5_gui">
+            <omgdi:waypoint x="485.0" y="378.0"/>
+            <omgdi:waypoint x="485.0" y="534.6646214307233"/>
+            <omgdi:waypoint x="539.0" y="534.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>
