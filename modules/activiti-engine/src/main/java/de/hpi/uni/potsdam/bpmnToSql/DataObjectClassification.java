@@ -30,10 +30,10 @@ public class DataObjectClassification {
 	
 	public static Boolean isDependentDataObjectWithUnspecifiedFK(DataObject dataObj, String scopeName) {
 		if(!dataObj.getName().equalsIgnoreCase(BpmnParse.getScopeInformation().get(scopeName))){
-			boolean fkNull = false;
+			boolean fkNull = true;
 			for (String fk : dataObj.getFkeys()) {
-				if (fk == null) {
-					fkNull = true;
+				if (fk != null) {
+					fkNull = false;
 				}
 			}
 			return fkNull;

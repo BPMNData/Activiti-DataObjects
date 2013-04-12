@@ -17,6 +17,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,6 +118,9 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
         	if (activity.getProperties().containsKey("multiInstance")){ //check whether the current sub-process is MI-instance
         		//if MI-instance, the activiti:collection variable is set with the list of PKs
         		execution.setVariable(dataObj.getName(), miList);
+        		execution.setDataObjectID(miList.get(0)); //current sub-process instance gets the first primary key of the return ArrayList
+        	} else {
+        		execution.setDataObjectID(miList.get(miList.size()-1)); 
         	}
         	
         	execution.setDataObjectID(miList.get(0)); //current sub-process instance gets the first primary key of the return ArrayList (in case of simple sub-process, is it only one)
@@ -242,6 +247,19 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
 	    					break;
 	    				}
 	    			}
+    			if(caseObjPk.isEmpty()) {
+    				for (ArrayList<DataObject> temp : BpmnParse.getInputData().values()) {
+						for (DataObject d : temp) {
+							if (d.getName().equalsIgnoreCase(caseObjName)) {
+		    					caseObjPk = d.getPkey();
+		    					break;
+		    				}
+						}
+						if(!caseObjPk.isEmpty()) {
+							break;
+						}
+					}
+    			}
 	    			
 	    			//provide case object of the scope to enable JOINALL; case object is in a map called getScopeInformation which has as key the scope (e.g., process, sub-process) name
 	    			q = createSqlQuery(dataObjectList, dataObjectID, BpmnParse.getScopeInformation().get(activityParentId.split(":")[0]), caseObjPk, "dependent_WithoutFK"); 

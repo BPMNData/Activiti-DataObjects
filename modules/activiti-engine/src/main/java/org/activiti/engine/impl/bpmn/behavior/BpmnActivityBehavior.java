@@ -132,7 +132,7 @@ public class BpmnActivityBehavior {
 			
 			//check whether the state of the object is a process variable
 			if (item.getState().startsWith("$")){
-				item.setState((String)execution.getVariable(item.getState().substring(1)));
+				item.setState((String)execution.getVariableLocal(item.getState().substring(1)));
 			}
     		
     		//create SQL query with respect to type of data object (main, dependent, dependent_MI, dependent_WithoutFK) 
